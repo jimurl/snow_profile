@@ -327,21 +327,21 @@ var SnowProfile = {};
     (SnowProfile.Cfg.GRAPH_WIDTH / 2);
 
   /**
-   * Maximum x value allowed for a handle (hardness 'I').
+   * Maximum x value allowed for a handle (hardness 'F-').
    *
    * @const {number}
    * @memberof SnowProfile
    */
-  SnowProfile.Cfg.HANDLE_MAX_X = SnowProfile.Cfg.DEPTH_LABEL_WD + 1 +
-    SnowProfile.Cfg.GRAPH_WIDTH - (SnowProfile.Cfg.HANDLE_SIZE / 2);
+  SnowProfile.Cfg.HANDLE_MAX_X = SnowProfile.Cfg.DEPTH_LABEL_WD + 
+    SnowProfile.Cfg.GRAPH_WIDTH - (SnowProfile.Cfg.HANDLE_SIZE * 1.5);
 
   /**
-   * Minimum x value allowed for a handle (hardness 'F-').
+   * Minimum x value allowed for a handle (hardness 'I').
    *
    * @const {number}
    * @memberof SnowProfile
    */
-  SnowProfile.Cfg.HANDLE_MIN_X = SnowProfile.Cfg.DEPTH_LABEL_WD + 1 +
+  SnowProfile.Cfg.HANDLE_MIN_X = SnowProfile.Cfg.DEPTH_LABEL_WD -
     (SnowProfile.Cfg.HANDLE_SIZE / 2);
 
   /**
@@ -377,8 +377,7 @@ var SnowProfile = {};
   /**
    * Initial X position of the layer handle
    *
-   * This X position centers the handle over the Right edge of the grid, which
-   * is farther Right than the user can move it.
+   * This X position centers the handle over the Right edge of the grid
    */
   SnowProfile.Cfg.HANDLE_INIT_X = SnowProfile.Cfg.DEPTH_LABEL_WD + 1 + SnowProfile.Cfg.GRAPH_WIDTH -
     (SnowProfile.Cfg.HANDLE_SIZE / 2);
@@ -531,12 +530,13 @@ var SnowProfile = {};
    * @returns {number} X axis position
    */
   SnowProfile.code2x = function(code) {
-    var x = SnowProfile.Cfg.DEPTH_LABEL_WD + 1;
+    var x = SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH - (SnowProfile.Cfg.HANDLE_SIZE / 2);
     if (code !== null) {
       for (var i = 0; i < SnowProfile.CAAML_HARD.length; i++) {
+        var tmp = 20 - i;
         if (code === SnowProfile.CAAML_HARD[i][0]) {
-          x = SnowProfile.Cfg.DEPTH_LABEL_WD + 1 +
-            (SnowProfile.Cfg.HARD_BAND_WD * i) +
+          x = SnowProfile.Cfg.DEPTH_LABEL_WD +
+            (SnowProfile.Cfg.HARD_BAND_WD * tmp) -
             (SnowProfile.Cfg.HANDLE_SIZE / 2);
           break;
         }
@@ -557,10 +557,11 @@ var SnowProfile = {};
       bandRight;
 
     for (var i = 0; i < SnowProfile.CAAML_HARD.length - 1; i++) {
+      var tmp = 19 - i;
       leftSide = SnowProfile.Cfg.DEPTH_LABEL_WD + 1;
-      bandLeft = leftSide + (SnowProfile.Cfg.HARD_BAND_WD * i) +
+      bandLeft = leftSide + (SnowProfile.Cfg.HARD_BAND_WD * tmp) +
           (SnowProfile.Cfg.HANDLE_SIZE / 2);
-      bandRight = leftSide + (SnowProfile.Cfg.HARD_BAND_WD * (i + 1)) +
+      bandRight = leftSide + (SnowProfile.Cfg.HARD_BAND_WD * (tmp + 1)) +
           (SnowProfile.Cfg.HANDLE_SIZE / 2);
       if ((x >= (bandLeft - (SnowProfile.Cfg.HARD_BAND_WD / 2))) &&
          (x < (bandRight - (SnowProfile.Cfg.HARD_BAND_WD / 2)))) {

@@ -108,6 +108,7 @@
         mm = Math.round((SnowProfile.totalDepth - depthVal) * 10) / 10;
       }
       handleTip.setContent( mm + ', ' + SnowProfile.x2code(x));
+      //handleTip.setContent( mm + ', ' + x);
     }
 
     /**

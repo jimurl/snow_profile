@@ -191,9 +191,8 @@
       // build the hardness (horizontal) scale for the graph area
       for (i = 0; i < SnowProfile.CAAML_HARD.length; i++ ) {
         var tmp = 20 - i;
-        x = SnowProfile.Cfg.DEPTH_LABEL_WD + 1 +
-          (SnowProfile.Cfg.HARD_BAND_WD * tmp) +
-          SnowProfile.Cfg.HANDLE_SIZE;
+        x = SnowProfile.Cfg.DEPTH_LABEL_WD +
+          (SnowProfile.Cfg.HARD_BAND_WD * tmp);
         if (SnowProfile.CAAML_HARD[i][1]) {
 
           // Add a vertical line to show SnowProfile hardness value
