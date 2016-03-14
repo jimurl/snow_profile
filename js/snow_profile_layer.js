@@ -239,7 +239,7 @@
         opacity: SnowProfile.Cfg.LAYER_FILL_OPACITY,
         stroke: SnowProfile.Cfg.LAYER_OUTLINE_COLOR
        })
-      .x(SnowProfile.Cfg.DEPTH_LABEL_WD + 1)
+      .x(SnowProfile.Cfg.DEPTH_LABEL_WD + 1 + SnowProfile.Cfg.GRAPH_WIDTH)
       .y(0);
     SnowProfile.mainGroup.add(layerOutline);
 
@@ -423,9 +423,9 @@
       }
 
       if (handle.x() !== SnowProfile.Cfg.HANDLE_INIT_X) {
-        layerOutline.width(handle.x() - SnowProfile.Cfg.DEPTH_LABEL_WD - 1 +
-          (SnowProfile.Cfg.HANDLE_SIZE / 2));
+        layerOutline.width(SnowProfile.Cfg.DEPTH_LABEL_WD + 1 + SnowProfile.Cfg.GRAPH_WIDTH - handle.x());
       }
+      layerOutline.x(handle.x());
       layerOutline.y(yTop);
       layerOutline.height(yBottom - yTop);
     };
