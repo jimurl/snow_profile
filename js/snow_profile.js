@@ -377,10 +377,10 @@ var SnowProfile = {};
   /**
    * Initial X position of the layer handle
    *
-   * This X position centers the handle over the left edge of the grid, which
-   * is farther left than the user can move it.
+   * This X position centers the handle over the Right edge of the grid, which
+   * is farther Right than the user can move it.
    */
-  SnowProfile.Cfg.HANDLE_INIT_X = SnowProfile.Cfg.DEPTH_LABEL_WD + 1 -
+  SnowProfile.Cfg.HANDLE_INIT_X = SnowProfile.Cfg.DEPTH_LABEL_WD + 1 + SnowProfile.Cfg.GRAPH_WIDTH -
     (SnowProfile.Cfg.HANDLE_SIZE / 2);
 
   /**

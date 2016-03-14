@@ -157,6 +157,19 @@
             color: SnowProfile.Cfg.LABEL_COLOR,
             width: 1
         }));
+        
+        // Add a vertical line along the right edge
+      SnowProfile.hardnessGroup.add(SnowProfile.drawing.line(
+        SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH + 1,
+        SnowProfile.Cfg.HANDLE_MIN_Y - 1 + (SnowProfile.Cfg.HANDLE_SIZE / 2),
+        SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH + 1,
+        SnowProfile.depth2y(SnowProfile.pitDepth) +
+          (SnowProfile.Cfg.HANDLE_SIZE / 2))
+          .addClass("snow_profile_hardness")
+          .stroke({
+            color: SnowProfile.Cfg.LABEL_COLOR,
+            width: 1
+        }));
 
       // Draw and label the hardness (horizontal) axis
       SnowProfile.hardnessGroup.add(SnowProfile.drawing.line(
@@ -176,9 +189,10 @@
 
       // Iterate through the table of CAAML hardness codes to
       // build the hardness (horizontal) scale for the graph area
-      for (i = 0; i < SnowProfile.CAAML_HARD.length; i++) {
+      for (i = 0; i < SnowProfile.CAAML_HARD.length; i++ ) {
+        var tmp = 20 - i;
         x = SnowProfile.Cfg.DEPTH_LABEL_WD + 1 +
-          (SnowProfile.Cfg.HARD_BAND_WD * i) +
+          (SnowProfile.Cfg.HARD_BAND_WD * tmp) +
           SnowProfile.Cfg.HANDLE_SIZE;
         if (SnowProfile.CAAML_HARD[i][1]) {
 
