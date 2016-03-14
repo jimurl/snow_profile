@@ -423,9 +423,9 @@
       }
 
       if (handle.x() !== SnowProfile.Cfg.HANDLE_INIT_X) {
-        layerOutline.width(SnowProfile.Cfg.DEPTH_LABEL_WD + 1 + SnowProfile.Cfg.GRAPH_WIDTH - handle.x());
+        layerOutline.width(SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH - handle.x() - (SnowProfile.Cfg.HANDLE_SIZE / 2));
       }
-      layerOutline.x(handle.x());
+      layerOutline.x(handle.x() + (SnowProfile.Cfg.HANDLE_SIZE / 2));
       layerOutline.y(yTop);
       layerOutline.height(yBottom - yTop);
     };
