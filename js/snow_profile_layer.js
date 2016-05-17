@@ -244,10 +244,10 @@
     SnowProfile.mainGroup.add(diagLine);
 
     /**
-     * Define a rectangle to outline the layer
+     * Define a polygon to outline the layer - may need to account for different hardness values at top and bottom
      * @type {Object}
      */
-    var layerOutline = SnowProfile.drawing.rect(0, 0)
+    var layerOutline = SnowProfile.drawing.polygon('0,0 0,0 0,0 0,0')
       .addClass('snow_profile_layer_outline')
       .style({
         fill: SnowProfile.Cfg.LAYER_FILL_COLOR,
@@ -309,6 +309,7 @@
       $(document).unbind("SnowProfileShowControls", handleVisible);
       $(document).unbind("SnowProfileDrawGrid", self.draw);
       handle.remove();
+      slopeHandle.remove();
       layerOutline.remove();
       diagLine.remove();
       featObj.destroy();
@@ -419,7 +420,7 @@
     /**
      * Set coordinates of the layer outline
      *
-     * This is a rectangle that shows the layer against the reference grid.
+     * This is a polygon that shows the layer against the reference grid.
      */
     this.setLayerOutline = function() {
       i = self.getIndex();
@@ -438,13 +439,14 @@
       }
 
       if (handle.x() !== SnowProfile.Cfg.HANDLE_INIT_X) {
-        layerOutline.width(SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH - handle.x() - (SnowProfile.Cfg.HANDLE_SIZE / 2));
+        //layerOutline.width(SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH - handle.x() - (SnowProfile.Cfg.HANDLE_SIZE / 2));
+        layerOutline.plot([[SnowProfile.Cfg.HANDLE_INIT_X,yTop], [SnowProfile.Cfg.HANDLE_INIT_X,yBottom], [handle.x(),yBottom], [handle.x(),yTop]]);
       }
       layerOutline.x(handle.x() + (SnowProfile.Cfg.HANDLE_SIZE / 2));
       layerOutline.y(yTop);
-      layerOutline.height(yBottom - yTop);
+      //layerOutline.height(yBottom - yTop);
       slopeHandle.x(SnowProfile.code2x(featObj.hardness()));
-      slopeHandle.y(handle.y() + layerOutline.height());
+      slopeHandle.y(handle.y() + (yBottom - yTop));
     };
 
     /**
@@ -458,7 +460,6 @@
       // Set handle X from hardness
       if (handleTouched) {
         handle.x(SnowProfile.code2x(featObj.hardness()));
-        slopeHandle.attr('visibility','visible');
       }
       else {
         handle.x(SnowProfile.Cfg.HANDLE_INIT_X);
@@ -574,6 +575,7 @@
      */
     handle.mousedown(function() {
       handleTouched = true;
+      slopeHandle.attr('visibility','visible');
     });
 
     /**
