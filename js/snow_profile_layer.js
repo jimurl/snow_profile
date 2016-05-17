@@ -68,6 +68,7 @@
      */
     var handleTouched = false;
 
+    
     /**
      * Handle for the line at the top of the layer.
      *
@@ -79,6 +80,16 @@
       .x(SnowProfile.Cfg.HANDLE_INIT_X)
       .y(SnowProfile.depth2y(depthVal))
       .addClass("snow_profile_handle");
+      
+    /**
+     * New handle to adjust the slope between top and bottom of the layer.
+     *
+     */    
+    var slopeHandle = SnowProfile.drawing.circle(SnowProfile.Cfg.HANDLE_SIZE)
+        .x(SnowProfile.Cfg.HANDLE_INIT_X)
+        .y(SnowProfile.depth2y(depthVal + SnowProfile.Cfg.INT_INIT_LAYERS))
+        .addClass("snow_profile_handle2")
+        .attr('visibility', 'hidden');
 
     /**
      * Tooltip that follows the handle and displays when mouse over handle.
@@ -188,6 +199,9 @@
       if (i !== 0) {
         SnowProfile.snowLayers[i - 1].setLayerOutline();
       }
+      
+      // Test dynamic form updates  --  works like a charm!
+      //$("#snow_profile_total_depth").val(newX);
 
       // Lay out the features
       SnowProfile.layout();
@@ -429,6 +443,8 @@
       layerOutline.x(handle.x() + (SnowProfile.Cfg.HANDLE_SIZE / 2));
       layerOutline.y(yTop);
       layerOutline.height(yBottom - yTop);
+      slopeHandle.x(SnowProfile.code2x(featObj.hardness()));
+      slopeHandle.y(handle.y() + layerOutline.height());
     };
 
     /**
@@ -442,6 +458,7 @@
       // Set handle X from hardness
       if (handleTouched) {
         handle.x(SnowProfile.code2x(featObj.hardness()));
+        slopeHandle.attr('visibility','visible');
       }
       else {
         handle.x(SnowProfile.Cfg.HANDLE_INIT_X);

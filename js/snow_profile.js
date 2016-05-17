@@ -822,11 +822,11 @@ var SnowProfile = {};
    *   input field.
    */
   SnowProfile.blockSubmit = function(event) {
-    if (event.type == "keydown" && event.which == 13) {
+    if (event.type === "keydown" && event.which === 13) {
       event.preventDefault();
       $(event.target).trigger("change");
     }
-  }
+  };
 
   /**
    * Initialize the SVG drawing and the grid group
