@@ -67,6 +67,7 @@
      * @type {boolean}
      */
     var handleTouched = false;
+    var slopeHandleTouched = false;
 
     
     /**
@@ -98,6 +99,9 @@
      */
     var handleTip = new Opentip('#' + handle.node.id, "uninitialized",
         "", {tipJoint: "bottom left"});
+        
+    var slopeHandleTip = new Opentip('#' + slopeHandle.node.id, "uninitialized",
+        "", {tipJoint: "bottom left"});
 
     /**
      * Set the text information in the handle tooltip.
@@ -120,6 +124,10 @@
       }
       handleTip.setContent( mm + ', ' + SnowProfile.x2code(x));
       //handleTip.setContent( mm + ', ' + x);
+    }
+    
+    function slopeHandleTipSet(x) {
+        slopeHandleTip.setContent(SnowProfile.x2code(x));
     }
 
     /**
@@ -186,6 +194,10 @@
 
       // Adjust the horizontal (hardness) position
       featObj.hardness(SnowProfile.x2code(newX));
+      
+      if (!slopeHandleTouched) {
+          featObj.hardness2(SnowProfile.x2code(newX));
+      }
 
       // Adjust the vertical (depth) position
       depthVal = SnowProfile.y2depth(newY);
@@ -199,6 +211,58 @@
       if (i !== 0) {
         SnowProfile.snowLayers[i - 1].setLayerOutline();
       }
+      
+      // Test dynamic form updates  --  works like a charm!
+      //$("#snow_profile_total_depth").val(newX);
+
+      // Lay out the features
+      SnowProfile.layout();
+
+      return {
+        x: newX,
+        y: newY
+      };
+    }); // handle.draggable(function
+    
+    slopeHandle.draggable(function(x, y) {
+      var newX = x;
+      var newY = y;
+      i = self.getIndex();
+      numLayers = SnowProfile.snowLayers.length;
+      var mm;
+
+      // X (hardness) position is bound by the edges of the graph.
+      if (x < SnowProfile.Cfg.HANDLE_MIN_X) {
+        newX = SnowProfile.Cfg.HANDLE_MIN_X;
+      }
+      else if (x > SnowProfile.Cfg.HANDLE_MAX_X) {
+        newX = SnowProfile.Cfg.HANDLE_MAX_X;
+      }
+
+      // Y (depth) position is limited to its current value
+      if (i === (numLayers - 1)) {
+
+        // This is the bottom layer.  The handle depth is constrained
+        // to the bottom of the graph
+        newY = SnowProfile.handleMaxY;
+      }
+      else {
+        // The handle depth is constrained to top of layer below it
+        newY = SnowProfile.snowLayers[i + 1].handleGetY() - 1;
+      }
+
+      // Adjust the horizontal (hardness) position
+      featObj.hardness2(SnowProfile.x2code(newX));
+
+      slopeHandleTipSet(newX);
+
+      // Adjust the polygon that outlines this layer
+      self.setLayerOutline();
+
+      // If this is not the top snow layer, update the snow layer above.
+      //if (i !== 0) {
+      //  SnowProfile.snowLayers[i - 1].setLayerOutline();
+      //}
       
       // Test dynamic form updates  --  works like a charm!
       //$("#snow_profile_total_depth").val(newX);
@@ -440,12 +504,12 @@
 
       if (handle.x() !== SnowProfile.Cfg.HANDLE_INIT_X) {
         //layerOutline.width(SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH - handle.x() - (SnowProfile.Cfg.HANDLE_SIZE / 2));
-        layerOutline.plot([[SnowProfile.Cfg.HANDLE_INIT_X,yTop], [SnowProfile.Cfg.HANDLE_INIT_X,yBottom], [handle.x(),yBottom], [handle.x(),yTop]]);
+        layerOutline.plot([[SnowProfile.Cfg.HANDLE_INIT_X,yTop], [SnowProfile.Cfg.HANDLE_INIT_X,yBottom], [slopeHandle.x(),yBottom], [handle.x(),yTop]]);
       }
       layerOutline.x(handle.x() + (SnowProfile.Cfg.HANDLE_SIZE / 2));
       layerOutline.y(yTop);
       //layerOutline.height(yBottom - yTop);
-      slopeHandle.x(SnowProfile.code2x(featObj.hardness()));
+      slopeHandle.x(SnowProfile.code2x(featObj.hardness2()));
       slopeHandle.y(handle.y() + (yBottom - yTop));
     };
 
@@ -470,6 +534,7 @@
 
       // Set handle tooltip contents
       handleTipSet(handle.x());
+      slopeHandleTipSet(slopeHandle.x());
 
       // Adjust the rectangle that outlines this layer
       self.setLayerOutline();
@@ -567,6 +632,10 @@
     handle.mouseover(function() {
       handle.style('cursor', 'pointer');
     });
+    
+    slopeHandle.mouseover(function() {
+      handle.style('cursor', 'pointer');
+    });
 
     /**
      * When the handle is in use, show its location to the right.
@@ -576,6 +645,10 @@
     handle.mousedown(function() {
       handleTouched = true;
       slopeHandle.attr('visibility','visible');
+    });
+    
+    slopeHandle.mousedown(function() {
+      slopeHandleTouched = true;
     });
 
     /**
@@ -588,6 +661,11 @@
      */
     handle.mouseup(function() {
       handle.x(SnowProfile.code2x(featObj.hardness()));
+      self.draw();
+    });
+    
+    slopeHandle.mouseup(function() {
+      slopeHandle.x(SnowProfile.code2x(featObj.hardness2()));
       self.draw();
     });
 

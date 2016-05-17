@@ -147,6 +147,7 @@
      * @type {string}
      */
     var hardnessCode = null;
+    var hardnessCode2 = null;
 
     /**
      * Text for the grain size
@@ -242,6 +243,15 @@
       else {
         hardnessCode = code;
       }
+    };
+    
+    this.hardness2 = function(code) {
+        if (code === undefined) {
+            return hardnessCode2;
+        }
+        else {
+            hardnessCode2 = code;
+        }
     };
 
     /**
