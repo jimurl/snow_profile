@@ -355,6 +355,7 @@
      */
     function handleVisible() {
       handle.show();
+      slopeHandle.show();
     }
 
     /**
@@ -362,6 +363,7 @@
      */
     function handleInvisible() {
       handle.hide();
+      slopeHandle.hide();
     }
 
     /**
