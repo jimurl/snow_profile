@@ -504,12 +504,14 @@
 
       if (handle.x() !== SnowProfile.Cfg.HANDLE_INIT_X) {
         //layerOutline.width(SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH - handle.x() - (SnowProfile.Cfg.HANDLE_SIZE / 2));
-        layerOutline.plot([[SnowProfile.Cfg.HANDLE_INIT_X,yTop], [SnowProfile.Cfg.HANDLE_INIT_X,yBottom], [slopeHandle.x(),yBottom], [handle.x(),yTop]]);
+        layerOutline.plot([[SnowProfile.Cfg.HANDLE_INIT_X + SnowProfile.Cfg.HANDLE_SIZE / 2,yTop], [SnowProfile.Cfg.HANDLE_INIT_X + SnowProfile.Cfg.HANDLE_SIZE / 2,yBottom], [slopeHandle.x() + SnowProfile.Cfg.HANDLE_SIZE / 2,yBottom], [handle.x() + SnowProfile.Cfg.HANDLE_SIZE / 2,yTop]]);
       }
-      layerOutline.x(handle.x() + (SnowProfile.Cfg.HANDLE_SIZE / 2));
-      layerOutline.y(yTop);
+      //layerOutline.x(handle.x() + (SnowProfile.Cfg.HANDLE_SIZE / 2));
+      //layerOutline.y(yTop);
       //layerOutline.height(yBottom - yTop);
-      slopeHandle.x(SnowProfile.code2x(featObj.hardness2()));
+      if (!slopeHandleTouched) {
+          slopeHandle.x(handle.x());
+      }
       slopeHandle.y(handle.y() + (yBottom - yTop));
     };
 
@@ -634,7 +636,7 @@
     });
     
     slopeHandle.mouseover(function() {
-      handle.style('cursor', 'pointer');
+      slopeHandle.style('cursor', 'pointer');
     });
 
     /**
@@ -661,6 +663,7 @@
      */
     handle.mouseup(function() {
       handle.x(SnowProfile.code2x(featObj.hardness()));
+      slopeHandle.x(SnowProfile.code2x(featObj.hardness2()));
       self.draw();
     });
     
