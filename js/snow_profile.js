@@ -1022,7 +1022,7 @@ var SnowProfile = {};
         SnowProfile.export();
       });
       
-      $("input.field-add-more-submit:submit").click(function() {
+      $('input[name=field_layer_add_more]').mousedown(function() {
         var maxIndex = SnowProfile.snowLayers.length - 1;
         var spaceBelow = SnowProfile.pitDepth - SnowProfile.snowLayers[maxIndex].depth();
         SnowProfile.newLayer(SnowProfile.snowLayers[maxIndex].depth() + (spaceBelow / 2));

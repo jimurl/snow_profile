@@ -507,9 +507,9 @@
     } // function pitDepthChange()
 
     // Set controls to default values
-    $("#edit-field-total-height-of-snowpack-und-0-value").val(SnowProfile.pitDepth);
-    $("#snow_profile_total_depth").val(SnowProfile.totalDepth);
-    $("#snow_profile_ref_depth").val(SnowProfile.depthRef);
+    //$("#edit-field-total-height-of-snowpack-und-0-value").val(SnowProfile.pitDepth);
+    //$("#snow_profile_total_depth").val(SnowProfile.totalDepth);
+    //$("#snow_profile_ref_depth").val(SnowProfile.depthRef);
 
     // Listen for a change to the "Total snow depth" input
     $("#edit-field-total-height-of-snowpack-und-0-value").change(totalDepthChange);
