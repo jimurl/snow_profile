@@ -214,7 +214,14 @@
       }
       
       // Test dynamic form updates  --  works like a charm!
-      //$("#snow_profile_total_depth").val(newX);
+      // Layer heights:
+      $('div.layer_num_' + i + ' input[id*="-height-"]').val(depthVal);
+      if (i > 0){
+        $('div.layer_num_' + (i-1) + ' input[id*="-bottom-depth-"]').val(depthVal);  
+      }
+      
+      // Layer Hardness:
+      $('div.layer_num_' + i + ' select[id*="-hardness-"]').val(featObj.hardness());
 
       // Lay out the features
       SnowProfile.layout();
