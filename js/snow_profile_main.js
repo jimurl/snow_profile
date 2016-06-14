@@ -7,6 +7,8 @@
 /* global SnowProfile */
 /* global SVG */
 
+
+
 (function($) {
   "use strict";
 
@@ -24,6 +26,36 @@
       alert('Your browser does not support SVG, required by the snow profile editor');
     }
   };
+  
+  // Initialize the live editor one time on document ready 
+  var isInitialized;
+  $(document).ready(function() {
+    if(!isInitialized) 
+    {
+      SnowProfile.main();
+      isInitialized = true;
+    }
+  });
+  
+  
+  // Behaviors related to Live Graph Editor
+  Drupal.behaviors.sp_livegraph = {
+      
+    attach: function (context, settings) {
+      
+      // Add new layer to graph when 'Add Layer' button is clicked on the form 
+      $('input[name=field_layer_add_more]', context).once( function () {
+          $('input[name=field_layer_add_more]', context).mousedown(function() {
+              var maxIndex = SnowProfile.snowLayers.length - 1;
+              var spaceBelow = SnowProfile.pitDepth - SnowProfile.snowLayers[maxIndex].depth();
+              SnowProfile.newLayer(SnowProfile.snowLayers[maxIndex].depth() + (spaceBelow / 2));
+              
+            });
+      });
+      
+    } // end attach
+  }; // end behaviors.snowpilot.sp_livegraph    
+	
 })(jQuery);
 
 // Configure Emacs for Drupal JavaScript coding standards
