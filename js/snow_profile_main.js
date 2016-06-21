@@ -19,9 +19,10 @@
     if (SVG.supported) {
       var i;
       SnowProfile.init();
-      for (i = 0; i < SnowProfile.Cfg.NUM_INIT_LAYERS; i++) {
+      /*for (i = 0; i < SnowProfile.Cfg.NUM_INIT_LAYERS; i++) {
         SnowProfile.newLayer(i * SnowProfile.Cfg.INT_INIT_LAYERS);
-      }
+      }*/
+      SnowProfile.newLayer(0);
     } else {
       alert('Your browser does not support SVG, required by the snow profile editor');
     }
@@ -93,6 +94,27 @@
           }
           // Stop Event 
           event.stopPropagation();
+        });
+        $('#edit-field-layer', context).delegate( 'select', 'change', function (event) {
+          var layerString = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
+          var layerNum = parseInt(layerString, 10);
+          // Primary Hardness Selector
+          if($(this).parents('.field-name-field-hardness').length)
+          {
+            SnowProfile.snowLayers[layerNum].handleTouchState(true);
+            SnowProfile.snowLayers[layerNum].features().hardness($(this).val());
+            if(!(SnowProfile.snowLayers[layerNum].slopeHandleTouchState())){
+              SnowProfile.snowLayers[layerNum].features().hardness2($(this).val());
+            }
+            SnowProfile.snowLayers[layerNum].draw();
+          }
+          // Secondary Hardness Selector
+          if($(this).parents('.field-name-field-hardness2').length)
+          {
+            SnowProfile.snowLayers[layerNum].slopeHandleTouchState(true);
+            SnowProfile.snowLayers[layerNum].features().hardness2($(this).val());
+            SnowProfile.snowLayers[layerNum].draw();
+          }
         });
       });
       
