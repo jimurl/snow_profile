@@ -64,19 +64,34 @@
       // Listen for text changes to form and update live graph appropriately
       $('#edit-field-layer', context).once('livegraph_connected', function () {
         $('#edit-field-layer', context).delegate( 'input', 'change', function (event) {
-          // Find layer number
-          var layerNum = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
+          // Find layer number - starts at 0, corresponds directly to SnowProfile.snowLayers[] index but not to .length
+          var layerString = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
+          var layerNum = parseInt(layerString, 10);
             
           // Top Depth was changed
           if($(this).parents('.field-name-field-height').length)
           {
+            // Update layer depth value
             SnowProfile.snowLayers[layerNum].depth($(this).val());
             SnowProfile.snowLayers[layerNum].draw();
-            if(layerNum !== 0){
+            // If not the top layer, update the layer above
+            if(layerNum != 0){
               SnowProfile.snowLayers[layerNum - 1].draw();
             }
             SnowProfile.layout();
           }
+          // Bottom Depth was changed
+          if($(this).parents('.field-name-field-bottom-depth').length)
+          {
+            // If not last layer, update the layer below depth value
+            if((layerNum + 1) != SnowProfile.snowLayers.length){
+              SnowProfile.snowLayers[(layerNum + 1)].depth($(this).val());
+              SnowProfile.snowLayers[(layerNum + 1)].draw();
+              SnowProfile.snowLayers[layerNum].draw();
+            }
+            SnowProfile.layout();
+          }
+          // Stop Event 
           event.stopPropagation();
         });
       });
