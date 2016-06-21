@@ -49,13 +49,15 @@
               var maxIndex = SnowProfile.snowLayers.length - 1;
               
               // Field validation?  If there is a value in the bottom depth...
-              if($("#edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value").val()) {
-                SnowProfile.newLayer($("#edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value").val());
+              if($("[id^=edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value]").val()) {
+                SnowProfile.newLayer($("[id^=edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value]").val());
+              
+              } 
               // If there's no value in bottom depth or top depth...
-              } else if(!$("#edit-field-layer-und-" + maxIndex + "-field-height-und-0-value").val()) {
+              /*else if(!$("#edit-field-layer-und-" + maxIndex + "-field-height-und-0-value").val()) {
                 var spaceBelow = SnowProfile.pitDepth - SnowProfile.snowLayers[maxIndex].depth();
                 SnowProfile.newLayer(SnowProfile.snowLayers[maxIndex].depth() + (spaceBelow / 2));
-              }
+              }*/
           });
       });
       
