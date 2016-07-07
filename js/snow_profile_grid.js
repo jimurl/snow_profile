@@ -313,10 +313,17 @@
       // Throw away the existing grid
       SnowProfile.gridGroup.clear();
       
+      // Get drawing reference from top or bottom 
+      var drawRef = $("#edit-field-depth-0-from-und").val();
+      if(drawRef === "bottom")  
+        SnowProfile.depthRef = "g";
+      else SnowProfile.depthRef = "s";
+      
       // Update pit depth if it is filled in
       var pitDepth = $("#edit-field-total-height-of-snowpack-und-0-value").val();
       if($.trim(pitDepth).length) {
         SnowProfile.pitDepth = Number(pitDepth);
+        SnowProfile.totalDepth = SnowProfile.pitDepth;
       }
       
 
@@ -526,8 +533,11 @@
     $("#edit-field-total-height-of-snowpack-und-0-value").change(pitDepthChange);
 
     // Listen for a change to the "Measure depth from" select
-    $("#snow_profile_ref_select").change(function() {
-      SnowProfile.depthRef = $("#snow_profile_ref_select").val();
+    $("#edit-field-depth-0-from-und").change(function() {
+      if($("#edit-field-depth-0-from-und").val() === "top") 
+        SnowProfile.depthRef = "s";
+      else if($("#edit-field-depth-0-from-und").val() === "bottom") 
+        SnowProfile.depthRef = "g";
       drawGrid();
     });
     
