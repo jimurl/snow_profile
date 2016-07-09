@@ -36,6 +36,23 @@
       SnowProfile.main();
       isInitialized = true;
     }
+    
+    // Testing form for new layers to add new layers to live profile
+    $(document).ajaxComplete(function() {
+      // get the next index to test if AJAX resulted in that layer being added to form
+      var nextIndex = SnowProfile.snowLayers.length;
+      var maxIndex = nextIndex - 1;
+      // test for existence of some element in that layer of the form...in this case bottom depth is fine
+      if ($("[id^=edit-field-layer-und-" + nextIndex + "-field-bottom-depth-und-0-value]").length) {
+        // add new layer if the form updated, use different depth values depending on depthRef
+        if (SnowProfile.depthRef === 's'){
+          SnowProfile.newLayer($("[id^=edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value]").val());
+        }
+        else if (SnowProfile.depthRef === 'g'){
+          SnowProfile.newLayer(SnowProfile.pitDepth - $("[id^=edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value]").val());
+        }
+      }
+    });
   });
   
   
@@ -43,31 +60,6 @@
   Drupal.behaviors.sp_livegraph = {
       
     attach: function (context, settings) {
-      
-      // Add new layer to graph when 'Add Layer' button is clicked on the form 
-      $('input[name=field_layer_add_more]', context).once( function () {
-          $('input[name=field_layer_add_more]', context).mousedown(function() {
-              var maxIndex = SnowProfile.snowLayers.length - 1;
-              
-              // Field validation?  If there is a value in the bottom depth...
-              if($("[id^=edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value]").val()) {
-                SnowProfile.newLayer($("[id^=edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value]").val());
-              
-              } 
-              // If there's no value in bottom depth or top depth...
-              /*else if(!$("#edit-field-layer-und-" + maxIndex + "-field-height-und-0-value").val()) {
-                var spaceBelow = SnowProfile.pitDepth - SnowProfile.snowLayers[maxIndex].depth();
-                SnowProfile.newLayer(SnowProfile.snowLayers[maxIndex].depth() + (spaceBelow / 2));
-              }*/
-          });
-      });
-      
-      $(document, context).once( function () {
-        $document.bind('DOMNodeInserted' function(e) {
-          alert(e.target + " was inserted");
-        });
-      });
-      
       // Listen for text changes to form and update live graph appropriately
       $('#edit-field-layer', context).once('livegraph_connected', function () {
         $('#edit-field-layer', context).delegate( 'input', 'change', function (event) {
