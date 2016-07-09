@@ -62,6 +62,12 @@
           });
       });
       
+      $(document, context).once( function () {
+        $document.bind('DOMNodeInserted' function(e) {
+          alert(e.target + " was inserted");
+        });
+      });
+      
       // Listen for text changes to form and update live graph appropriately
       $('#edit-field-layer', context).once('livegraph_connected', function () {
         $('#edit-field-layer', context).delegate( 'input', 'change', function (event) {
@@ -73,9 +79,14 @@
           if($(this).parents('.field-name-field-height').length)
           {
             // Update layer depth value
-            SnowProfile.snowLayers[layerNum].depth($(this).val());
+            if (SnowProfile.depthRef === "s") 
+              SnowProfile.snowLayers[layerNum].depth($(this).val());
+            else if (SnowProfile.depthRef === "g")
+              SnowProfile.snowLayers[layerNum].depth(SnowProfile.pitDepth - $(this).val());
+            
+            // Draw
             SnowProfile.snowLayers[layerNum].draw();
-            // If not the top layer, update the layer above
+            // If not the top layer, redraw the layer above
             if(layerNum != 0){
               SnowProfile.snowLayers[layerNum - 1].draw();
             }
@@ -86,7 +97,11 @@
           {
             // If not last layer, update the layer below depth value
             if((layerNum + 1) != SnowProfile.snowLayers.length){
-              SnowProfile.snowLayers[(layerNum + 1)].depth($(this).val());
+              if (SnowProfile.depthRef === "s") 
+                SnowProfile.snowLayers[(layerNum + 1)].depth($(this).val());
+              else if (SnowProfile.depthRef === "g")
+                SnowProfile.snowLayers[(layerNum + 1)].depth(SnowProfile.pitDepth - $(this).val());
+              // Draw
               SnowProfile.snowLayers[(layerNum + 1)].draw();
               SnowProfile.snowLayers[layerNum].draw();
             }
@@ -95,6 +110,7 @@
           // Stop Event 
           event.stopPropagation();
         });
+        // Hardness was changed
         $('#edit-field-layer', context).delegate( 'select', 'change', function (event) {
           var layerString = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
           var layerNum = parseInt(layerString, 10);

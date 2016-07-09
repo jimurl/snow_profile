@@ -54,7 +54,7 @@
         y;
 
       // Add a Depth label on the left side of the diagram
-      SnowProfile.depthGroup.add(SnowProfile.drawing.text("Depth (cm)")
+      SnowProfile.depthGroup.add(SnowProfile.drawing.text("Depth ")
         .addClass("snow_profile_depth")
         .font({
           family: 'sans-serif',
@@ -325,6 +325,8 @@
         SnowProfile.pitDepth = Number(pitDepth);
         SnowProfile.totalDepth = SnowProfile.pitDepth;
       }
+      
+      //alert("PitDepth: " + SnowProfile.pitDepth + ", Total Depth: " + SnowProfile.totalDepth);
       
 
       // Define background behind the reference grid
