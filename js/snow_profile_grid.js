@@ -465,8 +465,14 @@
      * If the checks fail, put the previous value back in the input box.
      */
     function pitDepthChange() {
-
-      var pitDepth = $("#edit-field-total-height-of-snowpack-und-0-value").val();
+      var pitDepth;
+      if ($.trim($("#edit-field-total-height-of-snowpack-und-0-value").val()).length){
+        pitDepth = $("#edit-field-total-height-of-snowpack-und-0-value").val();
+      }
+      else if(SnowProfile.depthRef === 'g'){
+        pitDepth = $("[id^=edit-field-layer-und-0-field-height-und-0-value]").val();
+      } else pitDepth = SnowProfile.totalDepth;
+      
       SnowProfile.totalDepth = pitDepth;
       var totalDepth = SnowProfile.totalDepth;
       if ((pitDepth.search(/^\d+$/) < 0) ||
@@ -534,6 +540,9 @@
 
     // Listen for a change to the "snow pit depth" input
     $("#edit-field-total-height-of-snowpack-und-0-value").change(pitDepthChange);
+    
+    // Listen for changes to top depth of first layer in case we need to draw grid from it - only works until new layer added
+    $("[id^=edit-field-layer-und-0-field-height-und-0-value]").change(pitDepthChange);
 
     // Listen for a change to the "Measure depth from" select
     $("#edit-field-depth-0-from-und").change(function() {
