@@ -36,7 +36,7 @@
       // Loop and check for existence of snowpack layers and count them, break when finished
       var layers = 0;
       while (true) {
-        // special case for first layer, which exist even on new pits
+        // special case for first layer, which exist even on new pits, so we check for a value
         if (layers === 0){
           if ($.trim($("[id^=edit-field-layer-und-" + layers + "-field-bottom-depth-und-0-value]").val()).length) {
             layers++;
@@ -44,6 +44,7 @@
             break;
           }
         } else {
+          // otherwise we check for field existance
           if ($("[id^=edit-field-layer-und-" + layers + "-field-bottom-depth-und-0-value]").length) {
             layers++;
           } else {

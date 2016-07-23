@@ -664,8 +664,7 @@
     for (i = 0; i < numLayers; i++) {
       thisHandle = SnowProfile.handlesGroup.get(i);
       //thisInsert = SnowProfile.insertGroup.get(i);
-      if (SnowProfile.snowLayers[i].depth() >= depthVal) {
-
+      if (Number(SnowProfile.snowLayers[i].depth()) >= Number(depthVal)) {
         // Insertion point found, we need to insert above snowLayers[i].
         SnowProfile.snowLayers.splice(i, 0, this);
         thisHandle.before(handle);
