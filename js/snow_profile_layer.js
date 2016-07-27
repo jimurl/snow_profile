@@ -215,15 +215,17 @@
         newX = SnowProfile.Cfg.HANDLE_INIT_X;
       }
       else {
-
+        // Lock down all layers except the final layer 
+        newY = SnowProfile.snowLayers[i].handleGetY();
         // This layer is below the surface and above the bottom.
         // The handle depth is constrained between layers above and below.
+        /*
         if (y > SnowProfile.snowLayers[i + 1].handleGetY()) {
           newY = SnowProfile.snowLayers[i + 1].handleGetY() - 1;
         }
         else if (y < SnowProfile.snowLayers[i - 1].handleGetY()) {
           newY = SnowProfile.snowLayers[i - 1].handleGetY() + 1;
-        }
+        }*/
       }
 
       // Adjust the horizontal (hardness) position
@@ -586,12 +588,9 @@
       i = self.getIndex();
 
       // Set handle X from hardness, hide unneccesary handles 
-      if (i === 0){
-        
-      } else if (i === (SnowProfile.snowLayers.length - 1)){
+      if (i === (SnowProfile.snowLayers.length - 1)){
         // last layer is ghost layer 
         handle.x(SnowProfile.Cfg.HANDLE_INIT_X);
-        slopeHandle.attr('visibility', 'invisible');
       }
       else if (handleTouched) {
         handle.x(SnowProfile.code2x(featObj.hardness()));
