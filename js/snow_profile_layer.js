@@ -155,7 +155,7 @@
         mm = Math.round((SnowProfile.totalDepth - depthVal) * 10) / 10;
       }
       handleTip.setContent( mm + ', ' + SnowProfile.x2code(x));
-      //handleTip.setContent( mm + ', ' + x);
+      //handleTip.setContent( depthVal );
     }
     
     function slopeHandleTipSet(x) {
@@ -253,9 +253,10 @@
         }
       }
       else if (SnowProfile.depthRef === "g") {
-        $('div.layer_num_' + i + ' input[id*="-height-"]').val(SnowProfile.pitDepth - depthVal);
+        var roundedDepth = (Math.round((SnowProfile.pitDepth - depthVal) * 10)) / 10;
+        $('div.layer_num_' + i + ' input[id*="-height-"]').val(roundedDepth);
         if (i > 0){
-          $('div.layer_num_' + (i-1) + ' input[id*="-bottom-depth-"]').val(SnowProfile.pitDepth - depthVal);  
+          $('div.layer_num_' + (i-1) + ' input[id*="-bottom-depth-"]').val(roundedDepth);  
         }
       }
       // Layer Hardness:
