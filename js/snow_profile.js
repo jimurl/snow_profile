@@ -563,8 +563,8 @@ var SnowProfile = {};
           (SnowProfile.Cfg.HANDLE_SIZE / 2);
       bandRight = leftSide + (SnowProfile.Cfg.HARD_BAND_WD * (tmp + 1)) +
           (SnowProfile.Cfg.HANDLE_SIZE / 2);
-      if ((x >= (bandLeft - (SnowProfile.Cfg.HARD_BAND_WD / 2))) &&
-         (x < (bandRight - (SnowProfile.Cfg.HARD_BAND_WD / 2)))) {
+      if ((x >= (bandLeft )) &&
+         (x < (bandRight ))) {
         code = SnowProfile.CAAML_HARD[i][0];
         break;
       }
