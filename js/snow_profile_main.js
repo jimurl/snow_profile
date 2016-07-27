@@ -62,9 +62,10 @@
             SnowProfile.snowLayers[0].slopeHandleTouchState(true);
             SnowProfile.snowLayers[0].features().hardness2($("[id^=edit-field-layer-und-0-field-hardness2-und]").val());
           }
+        // Draw Layer
         SnowProfile.snowLayers[0].draw();
         // Initialize any additional layers 
-        for (var i = 1; i < layers; i++) { //not initializing last layer, change later maybe?
+        for (var i = 1; i < layers; i++) {
           if (SnowProfile.depthRef === 's'){
             SnowProfile.newLayer($("[id^=edit-field-layer-und-" + i + "-field-height-und-0-value]").val());
           }
@@ -72,30 +73,51 @@
             SnowProfile.newLayer(SnowProfile.pitDepth - $("[id^=edit-field-layer-und-" + i + "-field-height-und-0-value]").val());
           }
           SnowProfile.snowLayers[i].handleTouchState(true);
+          // Set up hardness values
           SnowProfile.snowLayers[i].features().hardness($("[id^=edit-field-layer-und-" + i + "-field-hardness-und]").val());
           if ($("[id^=edit-field-layer-und-" + i + "-field-use-multiple-hardnesses-und]").is(":checked")) {
             SnowProfile.snowLayers[i].slopeHandleTouchState(true);
             SnowProfile.snowLayers[i].features().hardness2($("[id^=edit-field-layer-und-" + i + "-field-hardness2-und]").val());
           }
+          // Draw Layer
           SnowProfile.snowLayers[i].draw();
           SnowProfile.snowLayers[i-1].draw();
         }
+        // Set up final "ghost" layer with height equal to the final bottom depth
+        var finalLayer = layers - 1;
+        if (SnowProfile.depthRef === 's'){
+          SnowProfile.newLayer($("[id^=edit-field-layer-und-" + finalLayer + "-field-bottom-depth-und-0-value]").val());
+        }
+        else if (SnowProfile.depthRef === 'g'){
+          SnowProfile.newLayer(SnowProfile.pitDepth - $("[id^=edit-field-layer-und-" + finalLayer + "-field-bottom-depth-und-0-value]").val());
+        }
+        // Draw Layer
+        SnowProfile.snowLayers[layers].handleTouchState(true);
+        SnowProfile.snowLayers[layers].draw();
+        SnowProfile.snowLayers[finalLayer].draw();
+      } else {
+        // This is a new snowpit so initialize ghost layer with depth 20
+        SnowProfile.newLayer(20);
+        SnowProfile.snowLayers[1].handleTouchState(true);
+        SnowProfile.snowLayers[1].draw();
+        SnowProfile.snowLayers[0].draw();
       }
     }
     
     // Testing form for new layers to add new layers to live profile
     $(document).ajaxComplete(function() {
       // get the next index to test if AJAX resulted in that layer being added to form
-      var nextIndex = SnowProfile.snowLayers.length;
+      var nextIndex = SnowProfile.snowLayers.length - 1;
       var maxIndex = nextIndex - 1;
       // test for existence of some element in that layer of the form...in this case bottom depth is fine
       if ($("[id^=edit-field-layer-und-" + nextIndex + "-field-bottom-depth-und-0-value]").length) {
         // add new layer if the form updated, use different depth values depending on depthRef
+        var newDepthNumber = Number($("[id^=edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value]").val());
         if (SnowProfile.depthRef === 's'){
-          SnowProfile.newLayer($("[id^=edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value]").val());
+          SnowProfile.newLayer(newDepthNumber + 20);
         }
         else if (SnowProfile.depthRef === 'g'){
-          SnowProfile.newLayer(SnowProfile.pitDepth - $("[id^=edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value]").val());
+          SnowProfile.newLayer(SnowProfile.pitDepth - newDepthNumber + 20);
         }
       }
     });

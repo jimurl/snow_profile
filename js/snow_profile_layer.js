@@ -211,6 +211,8 @@
         else if (y < SnowProfile.snowLayers[i - 1].handleGetY()) {
           newY = SnowProfile.snowLayers[i - 1].handleGetY() + 1;
         }
+        // This is now a 'ghost layer' with no x (hardness) value allowed
+        newX = SnowProfile.Cfg.HANDLE_INIT_X;
       }
       else {
 
@@ -583,8 +585,15 @@
     this.draw = function() {
       i = self.getIndex();
 
-      // Set handle X from hardness
-      if (handleTouched) {
+      // Set handle X from hardness, hide unneccesary handles 
+      if (i === 0){
+        
+      } else if (i === (SnowProfile.snowLayers.length - 1)){
+        // last layer is ghost layer 
+        handle.x(SnowProfile.Cfg.HANDLE_INIT_X);
+        slopeHandle.attr('visibility', 'invisible');
+      }
+      else if (handleTouched) {
         handle.x(SnowProfile.code2x(featObj.hardness()));
       }
       else {
