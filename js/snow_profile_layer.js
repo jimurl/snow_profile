@@ -721,7 +721,10 @@
      */
     handle.mousedown(function() {
       handleTouched = true;
-      slopeHandle.attr('visibility','visible');
+      var i = self.getIndex();
+      i++;
+      if(i !== SnowProfile.snowLayers.length)
+        slopeHandle.attr('visibility','visible');
     });
     
     slopeHandle.mousedown(function() {
