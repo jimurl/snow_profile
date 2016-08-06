@@ -128,8 +128,41 @@
   Drupal.behaviors.sp_livegraph = {
       
     attach: function (context, settings) {
-      // Listen for text changes to form and update live graph appropriately
-      $('#edit-field-layer', context).once('livegraph_connected', function () {
+      
+      // Overriding the prototype beforeSubmit function in drupal ajax.js (maybe a bad idea?)
+      Drupal.ajax.prototype.beforeSubmit = function (form_values, element, options) {
+        var elementName = options.extraData._triggering_element_name;
+        var elementText = options.extraData._triggering_element_value;
+        
+        if (elementText === "Remove Layer"){
+          // Find layer number
+          var layerString = elementName.split("_")[3];
+          var layerNum = parseInt(layerString, 10);
+          
+          // Confirm layer deletion
+          var c = confirm("Really remove this layer???");
+          // If user cancels, return false to cancel layer removal
+          if (!c) {
+            return false;
+          }
+          // If user confirms, must get value for surrounding layers top/bottom depths to close gap
+          var newValue;
+          var totalLayers = SnowProfile.snowLayers.length;
+          if (layerNum === 0){
+            // Top layer, so second layer becomes new top
+            newValue = 0;
+            $('div.layer_num_1 input[id*="-height-"]').val(newValue);
+          } else if (layerNum > 0 && layerNum < (totalLayers - 2)) {
+            // Some middle layer, so prompt user for new value (subtract 2 because of hidden layer)
+            newValue = Number(prompt("Please enter the new layer depth value"));
+            $('div.layer_num_' + (layerNum + 1) + ' input[id*="-height-"]').val(newValue);
+            $('div.layer_num_' + (layerNum - 1) + ' input[id*="-bottom-depth-"]').val(newValue);
+          }
+        }
+      }
+      
+      $('#edit-field-layer', context).once('livegraph_connected', function () {        
+        // Listen for text changes to form and update live graph appropriately
         $('#edit-field-layer', context).delegate( 'input', 'change', function (event) {
           // Find layer number - starts at 0, corresponds directly to SnowProfile.snowLayers[] index but not to .length
           var layerString = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
