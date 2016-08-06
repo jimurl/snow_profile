@@ -155,9 +155,18 @@
           } else if (layerNum > 0 && layerNum < (totalLayers - 2)) {
             // Some middle layer, so prompt user for new value (subtract 2 because of hidden layer)
             newValue = Number(prompt("Please enter the new layer depth value"));
+            // Set SnowPilot form values
             $('div.layer_num_' + (layerNum + 1) + ' input[id*="-height-"]').val(newValue);
             $('div.layer_num_' + (layerNum - 1) + ' input[id*="-bottom-depth-"]').val(newValue);
+            // Adjust live editor 
+            SnowProfile.snowLayers[layerNum + 1].depth(newValue);
+          } else {
+            // Delete last layer, so only need to adjust live editor hidden layer 
+            SnowProfile.snowLayers[layerNum + 1].depth(SnowProfile.snowLayers[layerNum].depth());
           }
+          
+          // Remove layer from live graph
+          SnowProfile.snowLayers[layerNum].deleteLayer();
         }
       }
       
