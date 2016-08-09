@@ -237,6 +237,16 @@
             SnowProfile.snowLayers[layerNum].draw();
           }
           
+          // Primary Type Selector
+          if($(this).parents('.field-name-field-grain-type').length) {
+            SnowProfile.snowLayers[layerNum].features().describe(SnowProfile.getSnowPilotData(layerNum));
+          }
+          
+          // Secondary Type Selector
+          if($(this).parents('.field-name-field-grain-type-secondary').length) {
+            SnowProfile.snowLayers[layerNum].features().describe(SnowProfile.getSnowPilotData(layerNum));
+          }
+          
           // Grain Size 1 Selector
           if($(this).parents('.field-name-field-grain-size').length) {
             SnowProfile.snowLayers[layerNum].features().describe(SnowProfile.getSnowPilotData(layerNum));

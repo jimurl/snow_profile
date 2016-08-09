@@ -686,15 +686,18 @@ var SnowProfile = {};
    */
   SnowProfile.getSnowPilotData = function (layerNum) {
     
-    var primaryShape = "MM";
-    var primarySubShape = "";
-    var secondaryShape = "";
-    var secondarySubShape = "";
+    var primaryShape = translateShape($("[id^=edit-field-layer-und-" + layerNum + "-field-grain-type-]").val());
+    var primarySubShape = ""; // currently unused
+    var secondaryShape = translateShape($("[id^=edit-field-layer-und-" + layerNum + "-field-grain-type-secondary-]").val());
+    var secondarySubShape = ""; // currently unused
+    
+    
     var sizeMin = $("[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-]").val();
     var sizeMax = $("[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-max-]").val();
     if (sizeMax === "_none") {
       sizeMax = "";
     }
+    
     var stabTest = "Stability Tests Here";
     
     var tempData = {
@@ -709,6 +712,41 @@ var SnowProfile = {};
     
     return tempData;
   };
+  
+  function translateShape(shapeCode) {
+    
+    switch (shapeCode) {
+      case "33":
+        return "PP";
+        break;
+      case "34":
+        return "DF";
+        break;
+      case "35":
+        return "RG";
+        break;
+      case "36":
+        return "FC";
+        break;
+      case "37":
+        return "DH";
+        break;
+      case "38":
+        return "SH";
+        break;
+      case "39":
+        return "MF";
+        break;
+      case "40":
+        return "IF";
+        break;
+      case "41":
+        return "MM";
+        break;
+      default:
+        return "";
+    }
+  }
 
   /**
    * Tell listeners to hide anything that should not appear on
