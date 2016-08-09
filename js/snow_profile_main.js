@@ -25,12 +25,13 @@
   };
   
   // Initialize the live editor one time on document ready 
-  var isInitialized;
+  var isInitialized, promptedForConcern;
   $(document).ready(function() {
     if(!isInitialized) 
     {
       SnowProfile.main();
       isInitialized = true;
+      promptedForConcern = false;
       
       // Run initialization code for snowpits with already existing information
       // Loop and check for existence of snowpack layers and count them, break when finished
@@ -170,8 +171,9 @@
         }
       }
       
+      // Listen for text changes to form and update live graph appropriately
       $('#edit-field-layer', context).once('livegraph_connected', function () {        
-        // Listen for text changes to form and update live graph appropriately
+        // Input delegation
         $('#edit-field-layer', context).delegate( 'input', 'change', function (event) {
           // Find layer number - starts at 0, corresponds directly to SnowProfile.snowLayers[] index but not to .length
           var layerString = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
@@ -212,13 +214,14 @@
           // Stop Event 
           event.stopPropagation();
         });
-        // Hardness was changed
+        // Select delegation
         $('#edit-field-layer', context).delegate( 'select', 'change', function (event) {
+          
           var layerString = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
           var layerNum = parseInt(layerString, 10);
+          
           // Primary Hardness Selector
-          if($(this).parents('.field-name-field-hardness').length)
-          {
+          if($(this).parents('.field-name-field-hardness').length) {
             SnowProfile.snowLayers[layerNum].handleTouchState(true);
             SnowProfile.snowLayers[layerNum].features().hardness($(this).val());
             if(!(SnowProfile.snowLayers[layerNum].slopeHandleTouchState())){
@@ -226,13 +229,32 @@
             }
             SnowProfile.snowLayers[layerNum].draw();
           }
+          
           // Secondary Hardness Selector
-          if($(this).parents('.field-name-field-hardness2').length)
-          {
+          if($(this).parents('.field-name-field-hardness2').length) {
             SnowProfile.snowLayers[layerNum].slopeHandleTouchState(true);
             SnowProfile.snowLayers[layerNum].features().hardness2($(this).val());
             SnowProfile.snowLayers[layerNum].draw();
           }
+          
+          // Grain Size Selector
+          if($(this).parents('.field-name-field-grain-size').length) {
+            console.log("Value: " + $(this).val());
+            console.log("Layer Number: " + layerNum);
+            
+            SnowProfile.snowLayers[layerNum].features().describe({
+              primaryGrainShape: "",
+              primaryGrainSubShape: "",
+              secondaryGrainShape: "",
+              secondaryGrainSubShape: "",
+              grainSizeMin: $(this).val(),
+              grainSizeMax: "",
+              comment: "stability test here"
+            });
+          }
+          
+          // Stop Event 
+          event.stopPropagation();
         });
       });
       
