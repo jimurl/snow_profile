@@ -674,6 +674,41 @@ var SnowProfile = {};
       SnowProfile.snowLayers[i].features().layout(featureTop, featureBottom);
     }
   };
+  
+  /**
+   * Helper function used to create data object for feature descriptions from 
+   * the SnowPilot web form 
+   *
+   * @method
+   * @memberof SnowProfile
+   * @param {number} The snow profile layer we are interested in
+   * @returns {object} data object for use with featObj.describe(data) method.
+   */
+  SnowProfile.getSnowPilotData = function (layerNum) {
+    
+    var primaryShape = "MM";
+    var primarySubShape = "";
+    var secondaryShape = "";
+    var secondarySubShape = "";
+    var sizeMin = $("[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-]").val();
+    var sizeMax = $("[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-max-]").val();
+    if (sizeMax === "_none") {
+      sizeMax = "";
+    }
+    var stabTest = "Stability Tests Here";
+    
+    var tempData = {
+              primaryGrainShape: primaryShape,
+              primaryGrainSubShape: primarySubShape,
+              secondaryGrainShape: secondaryShape,
+              secondaryGrainSubShape: secondarySubShape,
+              grainSizeMin: sizeMin,
+              grainSizeMax: sizeMax,
+              comment: stabTest
+    };
+    
+    return tempData;
+  };
 
   /**
    * Tell listeners to hide anything that should not appear on

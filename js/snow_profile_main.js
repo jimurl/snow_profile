@@ -237,20 +237,14 @@
             SnowProfile.snowLayers[layerNum].draw();
           }
           
-          // Grain Size Selector
+          // Grain Size 1 Selector
           if($(this).parents('.field-name-field-grain-size').length) {
-            console.log("Value: " + $(this).val());
-            console.log("Layer Number: " + layerNum);
-            
-            SnowProfile.snowLayers[layerNum].features().describe({
-              primaryGrainShape: "",
-              primaryGrainSubShape: "",
-              secondaryGrainShape: "",
-              secondaryGrainSubShape: "",
-              grainSizeMin: $(this).val(),
-              grainSizeMax: "",
-              comment: "stability test here"
-            });
+            SnowProfile.snowLayers[layerNum].features().describe(SnowProfile.getSnowPilotData(layerNum));
+          }
+          
+          // Grain Size 2 Selector
+          if($(this).parents('.field-name-field-grain-size-max').length) {
+            SnowProfile.snowLayers[layerNum].features().describe(SnowProfile.getSnowPilotData(layerNum));
           }
           
           // Stop Event 
@@ -259,6 +253,7 @@
       });
       
     } // end attach
+    
   }; // end behaviors.snowpilot.sp_livegraph    
 	
 })(jQuery);
