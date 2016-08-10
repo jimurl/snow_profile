@@ -671,6 +671,9 @@ var SnowProfile = {};
       SnowProfile.setDrawingHeight();
 
       // Position the features description in the center of its area.
+      console.log("Layer " + i);
+      console.log("Ftop: " + featureTop);
+      console.log("Fbot: " + featureBottom);
       SnowProfile.snowLayers[i].features().layout(featureTop, featureBottom);
     }
   };

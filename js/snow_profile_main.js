@@ -92,7 +92,7 @@
         else if (SnowProfile.depthRef === 'g'){
           SnowProfile.newLayer(SnowProfile.pitDepth - $("[id^=edit-field-layer-und-" + finalLayer + "-field-bottom-depth-und-0-value]").val());
         }
-        // Draw Layer
+        // Draw Layer 
         SnowProfile.snowLayers[layers].handleTouchState(true, true);
         SnowProfile.snowLayers[layers].draw();
         SnowProfile.snowLayers[finalLayer].draw();
@@ -102,6 +102,12 @@
         SnowProfile.snowLayers[1].handleTouchState(true, true);
         SnowProfile.snowLayers[1].draw();
         SnowProfile.snowLayers[0].draw();
+      }
+      // Final Layout
+      SnowProfile.layout();
+      // Features
+      for (var i = 0; i < layers; i++) {
+        SnowProfile.snowLayers[i].features().describe(SnowProfile.getSnowPilotData(i));
       }
     }
     
