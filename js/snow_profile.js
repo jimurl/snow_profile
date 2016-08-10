@@ -681,19 +681,21 @@ var SnowProfile = {};
    *
    * @method
    * @memberof SnowProfile
-   * @param {number} The snow profile layer we are interested in
+   * @param {number} [layernum] The snow profile layer index we are interested in
    * @returns {object} data object for use with featObj.describe(data) method.
    */
   SnowProfile.getSnowPilotData = function (layerNum) {
     
-    var primaryShape = translateShape($("[id^=edit-field-layer-und-" + layerNum + "-field-grain-type-]").val());
+    //var primaryShape = translateShape($("[id^=edit-field-layer-und-" + layerNum + "-field-grain-type-]").val());
+    var primaryShape = translateShape($("div[class*=form-item-field-layer-und-" + layerNum + "-field-grain-type-] > div > select")[0].value);
     var primarySubShape = ""; // currently unused
-    var secondaryShape = translateShape($("[id^=edit-field-layer-und-" + layerNum + "-field-grain-type-secondary-]").val());
+    //var secondaryShape = translateShape($("[id^=edit-field-layer-und-" + layerNum + "-field-grain-type-secondary-]").val());
+    var secondaryShape = translateShape($("div[class*=form-item-field-layer-und-" + layerNum + "-field-grain-type-secondary-] > div > select")[0].value);
     var secondarySubShape = ""; // currently unused
     
     
-    var sizeMin = $("[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-]").val();
-    var sizeMax = $("[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-max-]").val();
+    var sizeMin = $("select[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-]").val();
+    var sizeMax = $("select[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-max-]").val();
     if (sizeMax === "_none") {
       sizeMax = "";
     }

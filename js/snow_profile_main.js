@@ -131,6 +131,7 @@
     attach: function (context, settings) {
       
       // Overriding the prototype beforeSubmit function in drupal ajax.js (maybe a bad idea?)
+      /*
       Drupal.ajax.prototype.beforeSubmit = function (form_values, element, options) {
         var elementName = options.extraData._triggering_element_name;
         var elementText = options.extraData._triggering_element_value;
@@ -169,7 +170,7 @@
           // Remove layer from live graph
           SnowProfile.snowLayers[layerNum].deleteLayer();
         }
-      }
+      } */
       
       // Listen for text changes to form and update live graph appropriately
       $('#edit-field-layer', context).once('livegraph_connected', function () {        
