@@ -73,16 +73,21 @@
     /**
      * Get or set handleTouched boolean of this snow layer
      * @param {boolean} [touchArg] - Sets whether handle has been touched
+     * @param {boolean} [isHidden] - Indicates whether to expose slope handle or not
      * @returns {boolean} Whether handle has been touched
      */
-    this.handleTouchState = function(touchArg) {
+    this.handleTouchState = function(touchArg, isHidden) {
       if (touchArg === undefined) {
         return handleTouched;
       }
       else {
         handle.stop();
         handleTouched = touchArg;
-        slopeHandle.attr('visibility','visible');
+        if (isHidden) {
+          slopeHandle.attr('visibility','hidden');
+        } else {
+          slopeHandle.attr('visibility','visible');
+        }
       }
     };
     
@@ -723,8 +728,11 @@
       handleTouched = true;
       var i = self.getIndex();
       i++;
-      if(i !== SnowProfile.snowLayers.length)
+      if(i == SnowProfile.snowLayers.length) {
+        slopeHandle.attr('visibility','hidden');
+      } else {
         slopeHandle.attr('visibility','visible');
+      }
     });
     
     slopeHandle.mousedown(function() {

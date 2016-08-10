@@ -57,7 +57,7 @@
       SnowProfile.newLayer(0);
       if (layers > 0){
         // Set up hardness values for first layer 
-        SnowProfile.snowLayers[0].handleTouchState(true);
+        SnowProfile.snowLayers[0].handleTouchState(true, false);
         SnowProfile.snowLayers[0].features().hardness($("[id^=edit-field-layer-und-0-field-hardness-und]").val());
         if ($("[id^=edit-field-layer-und-0-field-use-multiple-hardnesses-und]").is(":checked")) {
             SnowProfile.snowLayers[0].slopeHandleTouchState(true);
@@ -73,7 +73,7 @@
           else if (SnowProfile.depthRef === 'g'){
             SnowProfile.newLayer(SnowProfile.pitDepth - $("[id^=edit-field-layer-und-" + i + "-field-height-und-0-value]").val());
           }
-          SnowProfile.snowLayers[i].handleTouchState(true);
+          SnowProfile.snowLayers[i].handleTouchState(true, false);
           // Set up hardness values
           SnowProfile.snowLayers[i].features().hardness($("[id^=edit-field-layer-und-" + i + "-field-hardness-und]").val());
           if ($("[id^=edit-field-layer-und-" + i + "-field-use-multiple-hardnesses-und]").is(":checked")) {
@@ -84,7 +84,7 @@
           SnowProfile.snowLayers[i].draw();
           SnowProfile.snowLayers[i-1].draw();
         }
-        // Set up final "ghost" layer with height equal to the final bottom depth
+        // Set up final hidden layer with height equal to the final bottom depth
         var finalLayer = layers - 1;
         if (SnowProfile.depthRef === 's'){
           SnowProfile.newLayer($("[id^=edit-field-layer-und-" + finalLayer + "-field-bottom-depth-und-0-value]").val());
@@ -93,13 +93,13 @@
           SnowProfile.newLayer(SnowProfile.pitDepth - $("[id^=edit-field-layer-und-" + finalLayer + "-field-bottom-depth-und-0-value]").val());
         }
         // Draw Layer
-        SnowProfile.snowLayers[layers].handleTouchState(true);
+        SnowProfile.snowLayers[layers].handleTouchState(true, true);
         SnowProfile.snowLayers[layers].draw();
         SnowProfile.snowLayers[finalLayer].draw();
       } else {
-        // This is a new snowpit so initialize ghost layer with depth 20
+        // This is a new snowpit so initialize hidden layer with depth 20
         SnowProfile.newLayer(20);
-        SnowProfile.snowLayers[1].handleTouchState(true);
+        SnowProfile.snowLayers[1].handleTouchState(true, true);
         SnowProfile.snowLayers[1].draw();
         SnowProfile.snowLayers[0].draw();
       }
@@ -199,13 +199,17 @@
           // Bottom Depth was changed
           if($(this).parents('.field-name-field-bottom-depth').length)
           {
-            // If not last layer, update the layer below depth value
+            // If not last (now hidden) layer, update the layer below depth value
             if((layerNum + 1) != SnowProfile.snowLayers.length){
               if (SnowProfile.depthRef === "s") 
                 SnowProfile.snowLayers[(layerNum + 1)].depth($(this).val());
               else if (SnowProfile.depthRef === "g")
                 SnowProfile.snowLayers[(layerNum + 1)].depth(SnowProfile.pitDepth - $(this).val());
               // Draw
+              if((layerNum + 2) == SnowProfile.snowLayers.length) {
+                // Working with last visible layer,so keep bottom slope handle hidden
+                SnowProfile.snowLayers[(layerNum + 1)].handleTouchState(true, true);
+              }
               SnowProfile.snowLayers[(layerNum + 1)].draw();
               SnowProfile.snowLayers[layerNum].draw();
             }
@@ -222,7 +226,7 @@
           
           // Primary Hardness Selector
           if($(this).parents('.field-name-field-hardness').length) {
-            SnowProfile.snowLayers[layerNum].handleTouchState(true);
+            SnowProfile.snowLayers[layerNum].handleTouchState(true, false);
             SnowProfile.snowLayers[layerNum].features().hardness($(this).val());
             if(!(SnowProfile.snowLayers[layerNum].slopeHandleTouchState())){
               SnowProfile.snowLayers[layerNum].features().hardness2($(this).val());

@@ -177,8 +177,7 @@
         SnowProfile.Cfg.DEPTH_LABEL_WD,
         SnowProfile.depth2y(SnowProfile.pitDepth) +
           (SnowProfile.Cfg.HANDLE_SIZE / 2),
-        SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH + 1 -
-          SnowProfile.Cfg.HANDLE_SIZE / 2,
+        SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH + 1,
         SnowProfile.depth2y(SnowProfile.pitDepth) +
           (SnowProfile.Cfg.HANDLE_SIZE / 2)
         )
