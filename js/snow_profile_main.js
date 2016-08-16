@@ -278,6 +278,8 @@
           var testNum = parseInt(testString, 10);
           // Check if we can display a stability test 
           SnowProfile.checkStabilityTest(testNum);
+          // Update live profile
+          SnowProfile.snowLayers[0].features().describe(SnowProfile.getSnowPilotData(0));
         });
         $('#edit-field-test', context).delegate( 'input', 'blur', function (event) {
           // Get Test number 
@@ -285,6 +287,8 @@
           var testNum = parseInt(testString, 10);
           // Check if we can display a stability test 
           SnowProfile.checkStabilityTest(testNum);
+          // Update live profile
+          SnowProfile.snowLayers[0].features().describe(SnowProfile.getSnowPilotData(0));
         });
         
       });

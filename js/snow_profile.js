@@ -450,6 +450,18 @@ var SnowProfile = {};
    * @type {Array.<SnowProfile.Layer>}
    */
   SnowProfile.snowLayers = [];
+  
+  /**
+  * Snowpit Stability Tests
+  *
+  * An object to hold the strings created by the SnowPilot form that represent
+  * the stability tests performed on a snowpit.  Each test is indexed in the object
+  * by the associated test number from the SnowPilot form.  
+  *
+  * @memberof SnowProfile
+  * @type {Object}
+  */
+  SnowProfile.stabilityTests = {};
 
   /**
    * Make the handle visible if it has not been touched.
@@ -795,7 +807,11 @@ var SnowProfile = {};
     if (testType != "_none" && scoreType != "_none" && shearQuality != "_none" && testDepth != ""){
       var testString = scoreType + scoreValue + ", " + shearQuality + " @ " + testDepth;
       
-      console.log(testString);
+      SnowProfile.stabilityTests[testNum] = testString;
+      
+      for(var num in SnowProfile.stabilityTests){
+        console.log("Stability Test " + num + " = " + SnowProfile.stabilityTests[num]);
+      }
     }
   };
 

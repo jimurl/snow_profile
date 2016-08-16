@@ -644,6 +644,31 @@
         testLineDescr.text("");
       }
     } // function setCommentDescr(comment)
+    
+    /**
+     * Set the stability test text using SnowProfile.stabilityTests
+     */
+    function setStabTest() {
+
+      var words = [];
+      commentDescr.text("");
+      commentDescr.build(false);
+
+      // Iterate through all stability tests
+      for (var num in SnowProfile.stabilityTests){
+        var testText = SnowProfile.stabilityTests[num];
+        
+        // Split the stability test to get the depth value 
+        words = testText.split(' ');
+        var testDepth = Number(words[words.length -1]);
+        
+        console.log("Depth: " + testDepth);
+        
+        commentDescr.tspan(testText).newLine();
+        commentDescr.build(true);
+        
+      }
+    } // function setCommentDescr(comment)
 
     /**
      * Get or set description of this snow layer
@@ -714,7 +739,8 @@
         // gsBox.y(gsBbox.y);
 
         // Comment description
-        setCommentDescr(comment);
+        //setCommentDescr(comment);
+        setStabTest();
         cdBbox = commentDescr.bbox();
 
         // For debugging show the comment description bounding box
