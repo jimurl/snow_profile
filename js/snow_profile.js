@@ -671,15 +671,12 @@ var SnowProfile = {};
       SnowProfile.setDrawingHeight();
 
       // Position the features description in the center of its area.
-      console.log("Layer " + i);
-      console.log("Ftop: " + featureTop);
-      console.log("Fbot: " + featureBottom);
       SnowProfile.snowLayers[i].features().layout(featureTop, featureBottom);
     }
   };
   
   /**
-   * Helper function used to create data object for feature descriptions from 
+   * Used to create data object for feature descriptions from 
    * the SnowPilot web form 
    *
    * @method
@@ -703,7 +700,7 @@ var SnowProfile = {};
       sizeMax = "";
     }
     
-    var stabTest = "Stability Tests Here";
+    var stabTest = "";
     
     var tempData = {
               primaryGrainShape: primaryShape,
@@ -752,6 +749,55 @@ var SnowProfile = {};
         return "";
     }
   }
+  
+  /**
+   * Checks the fields of one of the stability tests to see if there is 
+   * enough information to construct a complete stability test string,
+   * and if there is calls the appropriate method to put string on the live
+   * profile
+   *
+   * @method
+   * @memberof SnowProfile
+   * @param {number} [testNum] The stability test number to check fields 
+   */
+  SnowProfile.checkStabilityTest = function (testNum) {
+    var scoreType, scoreValue;
+    var testType = $("select[id^=edit-field-test-und-" + testNum + "-field-stability-test-type]").val();
+    var shearQuality = $('select[id^=edit-field-test-und-' + testNum + '-field-shear-quality]').val();
+    var testDepth = $('input[id^=edit-field-test-und-' + testNum + '-field-depth]').val();
+    
+    switch(testType){
+      case "ECT":
+        scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-ect]').val();
+        scoreValue = $('input[id^=edit-field-test-und-' + testNum + '-field-ec-score]').val();
+        break;
+      case "CT":
+        scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-ct]').val();
+        scoreValue = $('input[id^=edit-field-test-und-' + testNum + '-field-ct-score]').val();
+        break;
+      case "RB":
+        scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-rb]').val();
+        scoreValue = "";
+        break;
+      case "PST":
+        console.log("ATTN: How should these display?");
+        break;
+      case "SB":
+        scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-sb]').val();
+        scoreValue = "";
+        break;
+      case "ST":
+        scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-st]').val();
+        scoreValue = "";
+        break;
+    }
+    
+    if (testType != "_none" && scoreType != "_none" && shearQuality != "_none" && testDepth != ""){
+      var testString = scoreType + scoreValue + ", " + shearQuality + " @ " + testDepth;
+      
+      console.log(testString);
+    }
+  };
 
   /**
    * Tell listeners to hide anything that should not appear on

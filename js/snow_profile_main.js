@@ -271,6 +271,22 @@
           // Stop Event 
           event.stopPropagation();
         });
+        // Stability Tests delegation
+        $('#edit-field-test', context).delegate( 'select', 'change', function (event) {
+          // Get Test number 
+          var testString = $(this).parents("div[class*='stability_test_num_']")[0].className.split(" ")[1].split("_")[3];
+          var testNum = parseInt(testString, 10);
+          // Check if we can display a stability test 
+          SnowProfile.checkStabilityTest(testNum);
+        });
+        $('#edit-field-test', context).delegate( 'input', 'blur', function (event) {
+          // Get Test number 
+          var testString = $(this).parents("div[class*='stability_test_num_']")[0].className.split(" ")[1].split("_")[3];
+          var testNum = parseInt(testString, 10);
+          // Check if we can display a stability test 
+          SnowProfile.checkStabilityTest(testNum);
+        });
+        
       });
       
     } // end attach

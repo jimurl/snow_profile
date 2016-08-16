@@ -2,6 +2,7 @@
  * @file Define the object that describes the features of a snow layer
  * @copyright Walt Haas <haas@xmission.com>
  * @license {@link http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GPLv2}
+ * @contributor Joe DeBruycker
  */
 
 /* global SnowProfile */
