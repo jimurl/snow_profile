@@ -323,6 +323,12 @@
       if($.trim(pitDepth).length) {
         SnowProfile.pitDepth = Number(pitDepth);
         SnowProfile.totalDepth = SnowProfile.pitDepth;
+      } else if (SnowProfile.depthRef = "g") {
+        var checkFirstDepth = $("[id^=edit-field-layer-und-0-field-height-und-0-value]").val();
+        if($.trim(checkFirstDepth).length) {
+          SnowProfile.pitDepth = Number(checkFirstDepth);
+          SnowProfile.totalDepth = SnowProfile.pitDepth;
+        }
       }
       
       //alert("PitDepth: " + SnowProfile.pitDepth + ", Total Depth: " + SnowProfile.totalDepth);
