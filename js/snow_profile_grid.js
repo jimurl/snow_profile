@@ -314,22 +314,25 @@
       
       // Get drawing reference from top or bottom 
       var drawRef = $("#edit-field-depth-0-from-und").val();
-      if(drawRef === "bottom")  
+      if(drawRef === "bottom") {
         SnowProfile.depthRef = "g";
-      else SnowProfile.depthRef = "s";
+      }
+      else {
+        SnowProfile.depthRef = "s";
+      }
       
       // Update pit depth if it is filled in
       var pitDepth = $("#edit-field-total-height-of-snowpack-und-0-value").val();
       if($.trim(pitDepth).length) {
         SnowProfile.pitDepth = Number(pitDepth);
         SnowProfile.totalDepth = SnowProfile.pitDepth;
-      } else if (SnowProfile.depthRef = "g") {
+      } else if (SnowProfile.depthRef === "g") {
         var checkFirstDepth = $("[id^=edit-field-layer-und-0-field-height-und-0-value]").val();
         if($.trim(checkFirstDepth).length) {
           SnowProfile.pitDepth = Number(checkFirstDepth);
           SnowProfile.totalDepth = SnowProfile.pitDepth;
         }
-      }
+      } 
       
       //alert("PitDepth: " + SnowProfile.pitDepth + ", Total Depth: " + SnowProfile.totalDepth);
       

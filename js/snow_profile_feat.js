@@ -674,6 +674,7 @@
      * Get or set description of this snow layer
      *
      * Called from the modal dialogue popup with data from the popup
+     * Now called by jQuery listeners attached to SnowPilot web form
      * @callback
      * @param {Object} [data] - Object describing the snow layer.
      * @returns {Object} Object describing the snow layer if param omitted.
