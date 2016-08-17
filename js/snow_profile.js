@@ -671,11 +671,15 @@ var SnowProfile = {};
       //SnowProfile.snowLayers[i].insertButton.setCy(
       //  Math.max(layerTop, featureTop));
 
-      // Draw the line below the bottom of the features description.
-      SnowProfile.snowLayers[i].features().lineBelowY(featureBottom);
+      // Draw the line below the bottom of the features description, except on hidden layer
+      if (i < (SnowProfile.snowLayers.length - 1)) {
+        SnowProfile.snowLayers[i].features().lineBelowY(featureBottom);
+      }
 
-      // Draw the diagonal line from layerBottom to lineBelow
-      SnowProfile.snowLayers[i].setDiagLine();
+      // Draw the diagonal line from layerBottom to lineBelow, except on hidden layer
+      if (i < (SnowProfile.snowLayers.length - 1)) {
+        SnowProfile.snowLayers[i].setDiagLine();
+      }
 
       // It's possible that the bottom of the features description area is
       // below the bottom of the SVG drawing area, in which case we need to
