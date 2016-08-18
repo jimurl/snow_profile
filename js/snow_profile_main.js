@@ -33,7 +33,7 @@
       isInitialized = true;
       promptedForConcern = false;
       
-      // Run initialization code for snowpits with already existing information
+      // Run initialization code for SnowPilot snowpits with already existing information
       // Loop and check for existence of snowpack layers and count them, break when finished
       var layers = 0;
       while (true) {
@@ -271,13 +271,14 @@
           // Stop Event 
           event.stopPropagation();
         });
+        
         // Stability Tests delegation
         $('#edit-field-test', context).delegate( 'select', 'change', function (event) {
           // Get Test number 
           var testString = $(this).parents("div[class*='stability_test_num_']")[0].className.split(" ")[1].split("_")[3];
           var testNum = parseInt(testString, 10);
-          // Check if we can display a stability test 
-          SnowProfile.checkStabilityTest(testNum);
+          // Try to add a stability test 
+          SnowProfile.addStabilityTest(testNum);
           // Update live profile
           SnowProfile.snowLayers[0].features().describe(SnowProfile.getSnowPilotData(0));
         });
@@ -285,8 +286,8 @@
           // Get Test number 
           var testString = $(this).parents("div[class*='stability_test_num_']")[0].className.split(" ")[1].split("_")[3];
           var testNum = parseInt(testString, 10);
-          // Check if we can display a stability test 
-          SnowProfile.checkStabilityTest(testNum);
+          // Try to add a stability test 
+          SnowProfile.addStabilityTest(testNum);
           // Update live profile
           SnowProfile.snowLayers[0].features().describe(SnowProfile.getSnowPilotData(0));
         });

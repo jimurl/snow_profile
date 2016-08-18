@@ -893,7 +893,7 @@ var SnowProfile = {};
    * @memberof SnowProfile
    * @param {number} [testNum] The stability test number to check fields 
    */
-  SnowProfile.checkStabilityTest = function (testNum) {
+  SnowProfile.addStabilityTest = function (testNum) {
     var scoreType, scoreValue;
     var testType = $("select[id^=edit-field-test-und-" + testNum + "-field-stability-test-type]").val();
     var shearQuality = $('select[id^=edit-field-test-und-' + testNum + '-field-shear-quality]').val();
@@ -986,7 +986,7 @@ var SnowProfile = {};
    * @fires ShowProfileHideControls
    * @fires ShowProfileShowControls
    */
-  SnowProfile.preview = function() {
+  /*SnowProfile.preview = function() {
 
     var saveWidth, saveHeight;
 
@@ -1021,7 +1021,7 @@ var SnowProfile = {};
 
     // Prevent bubbling of this event.
     return false;
-  };
+  };*/
 
   /**
    * Create a new snow layer with associated Features object
@@ -1041,7 +1041,7 @@ var SnowProfile = {};
    * Called when the "Save" button is clicked.
    * FIXME deal with other than 3 layers
    */
-  SnowProfile.export = function() {
+  /*SnowProfile.export = function() {
     var i;
     $("input[name='pit_depth']").val(SnowProfile.pitDepth);
     $("input[name='total_depth']").val(SnowProfile.totalDepth);
@@ -1067,7 +1067,7 @@ var SnowProfile = {};
         .val(describe.grainSizeMax);
       $("input[name='layer[" + i +"][comment]']").val(describe.comment);
     }
-  };
+  };*/
 
   /**
    * Intercept an ENTER key and replace SUBMIT with a change event
@@ -1170,17 +1170,17 @@ var SnowProfile = {};
      * Pencil symbol used by the edit button.
      * @memberof SnowProfile
      */
-    SnowProfile.pencil = SnowProfile.drawing.defs()
+    /*SnowProfile.pencil = SnowProfile.drawing.defs()
       .path("M 16.875,4.4 C 18.60063,4.4 20,5.7993755 20,7.525 20,8.2287506 19.7675,8.8774995 19.375,9.4 L 18.125,10.65 13.75,6.275 15,5.025 C 15.5225,4.6325 16.171251,4.4 16.875,4.4 z M 1.25,18.775 0,24.4 5.625,23.15 17.1875,11.587506 12.8125,7.2125 1.25,18.775 z m 12.726251,-7.273755 -8.750001,8.75 -1.0775,-1.07749 8.749999,-8.750001 1.077502,1.077491 z")
-      .addClass('snow_profile_ctrls_edit');
+      .addClass('snow_profile_ctrls_edit');*/
 
     /**
      * Plus symbol used by the insert button.
      * @memberof SnowProfile
      */
-    SnowProfile.plus = SnowProfile.drawing.defs()
+    /*SnowProfile.plus = SnowProfile.drawing.defs()
       .path("M 19.375,13.805085 H 12.5 v -6.875 c 0,-0.345 -0.28,-0.625 -0.625,-0.625 H 8.1249998 c -0.3449999,0 -0.6249999,0.28 -0.6249999,0.625 v 6.875 H 0.62499999 c -0.345,0 -0.62499999,0.28 -0.62499999,0.625 v 3.75 c 0,0.345 0.27999999,0.625 0.62499999,0.625 H 7.4999999 v 6.875 c 0,0.344999 0.28,0.625 0.6249999,0.625 H 11.875 c 0.345,0 0.625,-0.280001 0.625,-0.625 v -6.875 h 6.875 c 0.344999,0 0.625,-0.28 0.625,-0.625 v -3.75 c 0,-0.345 -0.280001,-0.625 -0.625,-0.625 z")
-      .addClass('snow_profile_ctrls_insert');
+      .addClass('snow_profile_ctrls_insert');*/
 
     /**
      * SnowProfile drawing insert buttons group
@@ -1216,18 +1216,18 @@ var SnowProfile = {};
     var code;
 
     // Populate the grain shape <select>s in the layer description pop-up
-    for (code in SnowProfile.CAAML_SHAPE) {
+    /*for (code in SnowProfile.CAAML_SHAPE) {
       if (SnowProfile.CAAML_SHAPE.hasOwnProperty(code)) {
         $("#snow_profile_primary_grain_shape").append("<option value=\"" +
           code + "\">" + SnowProfile.CAAML_SHAPE[code].text + "</option>");
         $("#snow_profile_secondary_grain_select").append("<option value=\"" +
           code + "\">" + SnowProfile.CAAML_SHAPE[code].text + "</option>");
       }
-    }
+    }*/
 
     // Create the <select>s for the grain subshape from the CAAML_SUBSHAPE
     // table.
-    var primary_opts = "",
+    /*var primary_opts = "",
       secondary_opts = "";
     for (var shape in SnowProfile.CAAML_SUBSHAPE) {
       if (SnowProfile.CAAML_SUBSHAPE.hasOwnProperty(shape)) {
@@ -1252,11 +1252,12 @@ var SnowProfile = {};
     }
     $("#snow_profile_primary_grain_subshape").append(primary_opts);
     $("#snow_profile_secondary_grain_subshape").append(secondary_opts);
-
+    */
+    
     // Add the reference grid to the SVG drawing
     new SnowProfile.Grid();
 
-    $(document).ready(function() {
+    /*$(document).ready(function() {
 
       // When a character is entered into the snow profile total depth
       // field, replace ENTER with a change event.
@@ -1282,21 +1283,21 @@ var SnowProfile = {};
         SnowProfile.export();
       });
       
-      /*$('input[name=field_layer_add_more]').mousedown(function() {
+      $('input[name=field_layer_add_more]').mousedown(function() {
         var maxIndex = SnowProfile.snowLayers.length - 1;
         var spaceBelow = SnowProfile.pitDepth - SnowProfile.snowLayers[maxIndex].depth();
         SnowProfile.newLayer(SnowProfile.snowLayers[maxIndex].depth() + (spaceBelow / 2));
         //alert(SnowProfile.snowLayers[0].depth());
-      });*/
+      });
       
       // Testing event handlers for updating editor from text input 
-      /*$("#my_test_input").change(function () {
+      $("#my_test_input").change(function () {
           SnowProfile.snowLayers[1].depth($(this).val());
           SnowProfile.snowLayers[1].draw();
           //alert($(this).val());  
-      });*/
+      });
 
-    });
+    });*/
 
 
   };  // function SnowProfile.init();
