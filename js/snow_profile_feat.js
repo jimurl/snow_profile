@@ -76,13 +76,12 @@
       grainSizeMax = "";
 
     /**
-     * User's comment about this snow layer
+     * User's comment about this snow layer - using this for stability tests.
+     * Array of Strings that describe the stability tests.
      *
-     * The comment character string entered by the user to comment
-     * on this snow layer.
-     * @type {string}
+     * @type {Array}
      */
-    var comment = "";
+    var comment;
 
     /**
      * SVG group to hold all displayable components of the feature description.
@@ -646,21 +645,23 @@
     } // function setCommentDescr(comment)
     
     /**
-     * Set the stability test text using SnowProfile.stabilityTests
+     * Set the stability test text 
+     *
+     * @param {Array.<string>} sTests Array of strings representing stability tests
      */
-    function setStabTest() {
+    function setStabTest(sTests) {
 
       var words = [];
       commentDescr.text("");
       commentDescr.build(false);
 
       // Iterate through all stability tests
-      for (var num in SnowProfile.stabilityTests){
-        var testText = SnowProfile.stabilityTests[num];
+      for (var i = 0; i < sTests.length; i++) {
+        var testText = sTests[i];
         
         // Split the stability test to get the depth value 
         words = testText.split(' ');
-        var testDepth = Number(words[words.length -1]);
+        var testDepth = Number(words[words.length - 1]);
         
         console.log("Depth: " + testDepth);
         
@@ -673,8 +674,7 @@
     /**
      * Get or set description of this snow layer
      *
-     * Called from the modal dialogue popup with data from the popup
-     * Now called by jQuery listeners attached to SnowPilot web form
+     * Called by jQuery listeners attached to SnowPilot web form
      * @callback
      * @param {Object} [data] - Object describing the snow layer.
      * @returns {Object} Object describing the snow layer if param omitted.
@@ -741,7 +741,7 @@
 
         // Comment description
         //setCommentDescr(comment);
-        setStabTest();
+        setStabTest(comment);
         cdBbox = commentDescr.bbox();
 
         // For debugging show the comment description bounding box

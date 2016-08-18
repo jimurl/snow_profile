@@ -454,14 +454,14 @@ var SnowProfile = {};
   /**
   * Snowpit Stability Tests
   *
-  * An object to hold the strings created by the SnowPilot form that represent
-  * the stability tests performed on a snowpit.  Each test is indexed in the object
+  * An array to hold Stability Test objects that represent
+  * the stability tests performed on a snowpit.  Each test is indexed in the array
   * by the associated test number from the SnowPilot form.  
   *
   * @memberof SnowProfile
-  * @type {Object}
+  * @type {Array}
   */
-  SnowProfile.stabilityTests = {};
+  SnowProfile.stabilityTests = [];
 
   /**
    * Make the handle visible if it has not been touched.
@@ -705,16 +705,26 @@ var SnowProfile = {};
     var primarySubShape = translateSubShape($("[id^=edit-field-layer-und-" + layerNum + "-field-grain-type-]").val());
     var secondaryShape = translateShape($("div[class*=form-item-field-layer-und-" + layerNum + "-field-grain-type-secondary-] > div > select")[0].value);
     var secondarySubShape = translateSubShape($("[id^=edit-field-layer-und-" + layerNum + "-field-grain-type-secondary-]").val());
-    //var primarySubShape = "";
-    //var secondarySubShape = "";
-    
     var sizeMin = $("select[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-]").val();
     var sizeMax = $("select[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-max-]").val();
     if (sizeMax === "_none") {
       sizeMax = "";
     }
     
-    var stabTest = "";
+    // Build array of stability test strings that fit into this layer 
+    var stabTests = [];
+    for (var i = 0; i < (SnowProfile.stabilityTests.length) ; i++) {
+      var layerTopDepth = SnowProfile.snowLayers[layerNum].depth();
+      var layerBotDepth = SnowProfile.snowLayers[layerNum + 1].depth();
+      var testDepth = SnowProfile.stabilityTests[i].depth;
+      if (SnowProfile.depthRef === "g") {
+        testDepth = SnowProfile.pitDepth - testDepth;
+      }
+      
+      if (testDepth >= layerTopDepth && testDepth < layerBotDepth) {
+        stabTests.push(SnowProfile.stabilityTests[i].description);
+      }
+    }
     
     var tempData = {
               primaryGrainShape: primaryShape,
@@ -723,7 +733,7 @@ var SnowProfile = {};
               secondaryGrainSubShape: secondarySubShape,
               grainSizeMin: sizeMin,
               grainSizeMax: sizeMax,
-              comment: stabTest
+              comment: stabTests
     };
     
     return tempData;
@@ -886,18 +896,17 @@ var SnowProfile = {};
   /**
    * Checks the fields of one of the stability tests to see if there is 
    * enough information to construct a complete stability test string,
-   * and if there is calls the appropriate method to put string on the live
-   * profile
+   * and if there is places it in SnowProfile.stabilityTests array
    *
    * @method
    * @memberof SnowProfile
-   * @param {number} [testNum] The stability test number to check fields 
+   * @param {number} [testNum] The stability test number, starting at 0 for first test
    */
   SnowProfile.addStabilityTest = function (testNum) {
     var scoreType, scoreValue;
     var testType = $("select[id^=edit-field-test-und-" + testNum + "-field-stability-test-type]").val();
     var shearQuality = $('select[id^=edit-field-test-und-' + testNum + '-field-shear-quality]').val();
-    var testDepth = $('input[id^=edit-field-test-und-' + testNum + '-field-depth]').val();
+    var testDepth = Number($('input[id^=edit-field-test-und-' + testNum + '-field-depth]').val());
     
     switch(testType){
       case "ECT":
@@ -926,12 +935,20 @@ var SnowProfile = {};
     }
     
     if (testType != "_none" && scoreType != "_none" && shearQuality != "_none" && testDepth != ""){
+      // Build the string to display in the live profile
       var testString = scoreType + scoreValue + ", " + shearQuality + " @ " + testDepth;
       
-      SnowProfile.stabilityTests[testNum] = testString;
+      // Build the object to store in SnowProfile.stabilityTests
+      var testObj = { description: testString, depth: testDepth };
       
-      for(var num in SnowProfile.stabilityTests){
-        console.log("Stability Test " + num + " = " + SnowProfile.stabilityTests[num]);
+      // Add object to SnowProfile.stabilityTests, or overwrite if it already exists
+      if (SnowProfile.stabilityTests.length > testNum) {
+        SnowProfile.stabilityTests[testNum] = testObj;
+      } else SnowProfile.stabilityTests.push(testObj)
+      
+      // Check array contents
+      for(var i = 0; i < SnowProfile.stabilityTests.length; i++) {
+        console.log("Stability Test " + i + " = " + SnowProfile.stabilityTests[i].description);
       }
     }
   };

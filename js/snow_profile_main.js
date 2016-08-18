@@ -277,19 +277,23 @@
           // Get Test number 
           var testString = $(this).parents("div[class*='stability_test_num_']")[0].className.split(" ")[1].split("_")[3];
           var testNum = parseInt(testString, 10);
-          // Try to add a stability test 
+          // Try to add a stability test to the array
           SnowProfile.addStabilityTest(testNum);
           // Update live profile
-          SnowProfile.snowLayers[0].features().describe(SnowProfile.getSnowPilotData(0));
+          for (var i = 0; i < (SnowProfile.snowLayers.length - 1); i++) {
+            SnowProfile.snowLayers[i].features().describe(SnowProfile.getSnowPilotData(i));
+          }
         });
         $('#edit-field-test', context).delegate( 'input', 'blur', function (event) {
           // Get Test number 
           var testString = $(this).parents("div[class*='stability_test_num_']")[0].className.split(" ")[1].split("_")[3];
           var testNum = parseInt(testString, 10);
-          // Try to add a stability test 
+          // Try to add a stability test to the array
           SnowProfile.addStabilityTest(testNum);
           // Update live profile
-          SnowProfile.snowLayers[0].features().describe(SnowProfile.getSnowPilotData(0));
+          for (var i = 0; i < (SnowProfile.snowLayers.length - 1); i++) {
+            SnowProfile.snowLayers[i].features().describe(SnowProfile.getSnowPilotData(i));
+          }
         });
         
       });
