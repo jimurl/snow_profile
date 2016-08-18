@@ -386,6 +386,7 @@
     /**
      * Respond to change in total snow depth value.
      */
+    /*
     function totalDepthChange() {
       var totalDepth = $("#edit-field-total-height-of-snowpack-und-0-value").val();
       if (totalDepth === '') {
@@ -462,7 +463,7 @@
      SnowProfile.snowLayers[SnowProfile.snowLayers.length - 1]
        .draw();
      SnowProfile.layout();
-    } // function totalDepthChange()
+    } // function totalDepthChange() */
 
     /**
      * Respond to a change in the depth of the pit
@@ -474,15 +475,19 @@
      */
     function pitDepthChange() {
       var pitDepth;
+      // Check height of snowpack field
       if ($.trim($("#edit-field-total-height-of-snowpack-und-0-value").val()).length){
         pitDepth = $("#edit-field-total-height-of-snowpack-und-0-value").val();
       }
+      // If no HoS and we're measuring from bottom, use the first Top Depth value 
       else if(SnowProfile.depthRef === 'g'){
         pitDepth = $("[id^=edit-field-layer-und-0-field-height-und-0-value]").val();
       } else pitDepth = SnowProfile.totalDepth;
       
-      SnowProfile.totalDepth = pitDepth;
+      SnowProfile.totalDepth = Number(pitDepth);
+      
       var totalDepth = SnowProfile.totalDepth;
+      /*
       if ((pitDepth.search(/^\d+$/) < 0) ||
         (pitDepth < SnowProfile.Cfg.MIN_DEPTH)) {
         alert("Snow pit depth must be a number >= " +
@@ -500,14 +505,14 @@
         alert("Snow pit depth cannot be greater than total snow depth");
         $("#edit-field-total-height-of-snowpack-und-0-value").val(SnowProfile.pitDepth);
         return;
-      }
+      } */
 
       // If reducing pit depth and that will cause bottom layer(s) to be lost,
       // get user confirmation.
+      /*
       if (Number(pitDepth) < SnowProfile.pitDepth) {
         // User is reducing the depth of the pit, check lower layers
-        if (SnowProfile.snowLayers[SnowProfile.snowLayers.length - 1]
-          .depth() > Number(pitDepth)) {
+        if (SnowProfile.snowLayers[SnowProfile.snowLayers.length - 1].depth() > Number(pitDepth)) {
           if (confirm('New pit depth will cause lower layer(s) to be discarded')) {
             // Remove snow layers from the bottom of the pit until we get to a
             // layer that is above the new pit depth.  That could potentially be
@@ -523,7 +528,7 @@
             return;
           }
         }
-      }
+      }*/
 
       SnowProfile.pitDepth = Number(pitDepth);
       SnowProfile.handleMaxY = SnowProfile.Cfg.TOP_LABEL_HT + 1 +
@@ -537,14 +542,6 @@
        .draw();
      SnowProfile.layout();
     } // function pitDepthChange()
-
-    // Set controls to default values
-    //$("#edit-field-total-height-of-snowpack-und-0-value").val(SnowProfile.pitDepth);
-    //$("#snow_profile_total_depth").val(SnowProfile.totalDepth);
-    //$("#snow_profile_ref_depth").val(SnowProfile.depthRef);
-
-    // Listen for a change to the "Total snow depth" input
-    //$("#edit-field-total-height-of-snowpack-und-0-value").change(totalDepthChange);
 
     // Listen for a change to the "snow pit depth" input
     $("#edit-field-total-height-of-snowpack-und-0-value").change(pitDepthChange);
@@ -561,6 +558,7 @@
       drawGrid();
     });
     
+    // Draw grid at end of constructor 
     drawGrid();
   };
 })(jQuery);
