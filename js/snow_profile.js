@@ -667,10 +667,6 @@ var SnowProfile = {};
       // height is the number of pixels to allocate for feature description
       featureBottom = Math.max(layerBottom, (featureTop + height));
 
-      // Center the layer's insert button on the top line
-      //SnowProfile.snowLayers[i].insertButton.setCy(
-      //  Math.max(layerTop, featureTop));
-
       // Draw the line below the bottom of the features description, except on hidden layer
       if (i < (SnowProfile.snowLayers.length - 1)) {
         SnowProfile.snowLayers[i].features().lineBelowY(featureBottom);
@@ -711,7 +707,7 @@ var SnowProfile = {};
       sizeMax = "";
     }
     
-    // Build array of stability test strings that fit into this layer 
+    // Build array of stability test objects that fit into this layer 
     var stabTests = [];
     for (var i = 0; i < (SnowProfile.stabilityTests.length) ; i++) {
       var layerTopDepth = SnowProfile.snowLayers[layerNum].depth();
@@ -722,7 +718,7 @@ var SnowProfile = {};
       }
       
       if (testDepth >= layerTopDepth && testDepth < layerBotDepth) {
-        stabTests.push(SnowProfile.stabilityTests[i].description);
+        stabTests.push(SnowProfile.stabilityTests[i]);
       }
     }
     

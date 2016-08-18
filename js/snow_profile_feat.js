@@ -77,7 +77,7 @@
 
     /**
      * User's comment about this snow layer - using this for stability tests.
-     * Array of Strings that describe the stability tests.
+     * Array of Objects that describe the stability tests.
      *
      * @type {Array}
      */
@@ -647,24 +647,27 @@
     /**
      * Set the stability test text 
      *
-     * @param {Array.<string>} sTests Array of strings representing stability tests
+     * @param {Array} sTests Array of objects representing stability tests
      */
     function setStabTest(sTests) {
 
       var words = [];
       commentDescr.text("");
       commentDescr.build(false);
+      
+      // Sort stability tests based on depth
+      sTests.sort(function (a, b) {
+        return a.depth - b.depth;
+      });
 
       // Iterate through all stability tests
       for (var i = 0; i < sTests.length; i++) {
-        var testText = sTests[i];
-        
-        // Split the stability test to get the depth value 
-        words = testText.split(' ');
-        var testDepth = Number(words[words.length - 1]);
+        var testText = sTests[i].description;
+        var testDepth = sTests[i].depth;
         
         // Add the text to the stability test column on live graph
         commentDescr.tspan(testText).newLine();
+        //commentDescr.tspan(testText).newLine().dy(SnowProfile.depth2y(testDepth));
         commentDescr.build(true);
         
       }
