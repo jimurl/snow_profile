@@ -944,12 +944,7 @@ var SnowProfile = {};
       // Add object to SnowProfile.stabilityTests, or overwrite if it already exists
       if (SnowProfile.stabilityTests.length > testNum) {
         SnowProfile.stabilityTests[testNum] = testObj;
-      } else SnowProfile.stabilityTests.push(testObj)
-      
-      // Check array contents
-      for(var i = 0; i < SnowProfile.stabilityTests.length; i++) {
-        console.log("Stability Test " + i + " = " + SnowProfile.stabilityTests[i].description);
-      }
+      } else SnowProfile.stabilityTests.push(testObj);
     }
   };
 

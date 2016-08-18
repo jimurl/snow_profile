@@ -137,11 +137,26 @@
     attach: function (context, settings) {
       
       // Overriding the prototype beforeSubmit function in drupal ajax.js (maybe a bad idea?)
-      /*
+      
       Drupal.ajax.prototype.beforeSubmit = function (form_values, element, options) {
         var elementName = options.extraData._triggering_element_name;
         var elementText = options.extraData._triggering_element_value;
         
+        // Remove stability tests
+        if (elementText === "Remove Test") {
+          // Find test number
+          var testString = elementName.split("_")[3];
+          var testNum = parseInt(testString, 10);
+          
+          // Remove that test from SnowProfile.stabilityTests
+          SnowProfile.stabilityTests.splice(testNum, 1);
+          
+          for (var i = 0; i < (SnowProfile.snowLayers.length - 1); i++) {
+            SnowProfile.snowLayers[i].features().describe(SnowProfile.getSnowPilotData(i));
+          }
+        }
+        
+        /*
         if (elementText === "Remove Layer"){
           // Find layer number
           var layerString = elementName.split("_")[3];
@@ -175,8 +190,8 @@
           
           // Remove layer from live graph
           SnowProfile.snowLayers[layerNum].deleteLayer();
-        }
-      } */
+        } */
+      } 
       
       // Listen for text changes to form and update live graph appropriately
       $('#edit-field-layer', context).once('livegraph_connected', function () {        

@@ -663,8 +663,7 @@
         words = testText.split(' ');
         var testDepth = Number(words[words.length - 1]);
         
-        console.log("Depth: " + testDepth);
-        
+        // Add the text to the stability test column on live graph
         commentDescr.tspan(testText).newLine();
         commentDescr.build(true);
         
