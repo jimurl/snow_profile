@@ -657,7 +657,11 @@
       
       // Sort stability tests based on depth
       sTests.sort(function (a, b) {
-        return a.depth - b.depth;
+        if (SnowProfile.depthRef === "s") {
+          return a.depth - b.depth;
+        } else {
+          return b.depth - a.depth;
+        }
       });
 
       // Iterate through all stability tests

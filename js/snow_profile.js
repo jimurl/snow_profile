@@ -899,7 +899,7 @@ var SnowProfile = {};
    * @param {number} [testNum] The stability test number, starting at 0 for first test
    */
   SnowProfile.addStabilityTest = function (testNum) {
-    var scoreType, scoreValue;
+    var scoreType, scoreValue, testString;
     var testType = $("select[id^=edit-field-test-und-" + testNum + "-field-stability-test-type]").val();
     var shearQuality = $('select[id^=edit-field-test-und-' + testNum + '-field-shear-quality]').val();
     var testDepth = Number($('input[id^=edit-field-test-und-' + testNum + '-field-depth]').val());
@@ -908,40 +908,73 @@ var SnowProfile = {};
       case "ECT":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-ect]').val();
         scoreValue = $('input[id^=edit-field-test-und-' + testNum + '-field-ec-score]').val();
+        if (scoreType === "ECTPV") {
+          testString = scoreType + ", " + shearQuality + " @ " + testDepth;
+        } else if (scoreType === "ECTX") {
+          testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
+          testString = scoreType;
+        } else {
+          testString = scoreType + scoreValue + ", " + shearQuality + " @ " + testDepth;
+        }
         break;
       case "CT":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-ct]').val();
         scoreValue = $('input[id^=edit-field-test-und-' + testNum + '-field-ct-score]').val();
+        if (scoreType === "CTV") {
+          testString = scoreType + ", " + shearQuality + " @ " + testDepth;
+        } else if (scoreType === "CTN") {
+          testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
+          testString = scoreType;
+        } else {
+          testString = scoreType + scoreValue + ", " + shearQuality + " @ " + testDepth;
+        }
         break;
       case "RB":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-rb]').val();
         scoreValue = "";
+        if (scoreType === "RB7") {
+          testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
+          testString = scoreType;
+        } else {
+          testString = scoreType + ", " + shearQuality + " @ " + testDepth;
+        }
         break;
       case "PST":
-        console.log("ATTN: How should these display?");
+        scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-data-code-pst]').val();
+        var sawCutLength = $('input[id^=edit-field-test-und-' + testNum + '-field-length-of-saw-cut]').val();
+        var columnLength = $('input[id^=edit-field-test-und-' + testNum + '-field-length-of-isolated-col]').val();
+        testString = "PST " + sawCutLength + "/" + columnLength + "(" + scoreType + ") down " + testDepth; 
         break;
       case "SB":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-sb]').val();
         scoreValue = "";
+        if (scoreType === "SBN") {
+          testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
+          testString = scoreType;
+        } else {
+          testString = scoreType + ", " + shearQuality + " @ " + testDepth;
+        }
         break;
       case "ST":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-st]').val();
         scoreValue = "";
+        if (scoreType === "STN") {
+          testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
+          testString = scoreType;
+        } else {
+          testString = scoreType + ", " + shearQuality + " @ " + testDepth;
+        }
         break;
     }
     
-    if (testType != "_none" && scoreType != "_none" && shearQuality != "_none" && testDepth != ""){
-      // Build the string to display in the live profile
-      var testString = scoreType + scoreValue + ", " + shearQuality + " @ " + testDepth;
-      
-      // Build the object to store in SnowProfile.stabilityTests
-      var testObj = { description: testString, depth: testDepth };
-      
-      // Add object to SnowProfile.stabilityTests, or overwrite if it already exists
-      if (SnowProfile.stabilityTests.length > testNum) {
-        SnowProfile.stabilityTests[testNum] = testObj;
-      } else SnowProfile.stabilityTests.push(testObj);
-    }
+    // Build the object to store in SnowProfile.stabilityTests
+    var testObj = { description: testString, depth: testDepth };
+    
+    // Add object to SnowProfile.stabilityTests, or overwrite if it already exists
+    if (SnowProfile.stabilityTests.length > testNum) {
+      SnowProfile.stabilityTests[testNum] = testObj;
+    } else SnowProfile.stabilityTests.push(testObj);
+    
   };
 
   /**
