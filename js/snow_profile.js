@@ -909,12 +909,12 @@ var SnowProfile = {};
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-ect]').val();
         scoreValue = $('input[id^=edit-field-test-und-' + testNum + '-field-ec-score]').val();
         if (scoreType === "ECTPV") {
-          testString = scoreType + ", " + shearQuality + " @ " + testDepth;
+          testString = scoreType + " @ " + testDepth;
         } else if (scoreType === "ECTX") {
           testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
           testString = scoreType;
         } else {
-          testString = scoreType + scoreValue + ", " + shearQuality + " @ " + testDepth;
+          testString = scoreType + scoreValue + " @ " + testDepth;
         }
         break;
       case "CT":
