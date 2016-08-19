@@ -667,7 +667,7 @@
         
         // Add the text to the stability test column on live graph
         commentDescr.tspan(testText).newLine();
-        //commentDescr.tspan(testText).newLine().dy(SnowProfile.depth2y(testDepth));
+        //commentDescr.tspan(testText).newLine().y(SnowProfile.depth2y(testDepth));
         commentDescr.build(true);
         
       }

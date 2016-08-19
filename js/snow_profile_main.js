@@ -95,8 +95,30 @@
       SnowProfile.snowLayers[1].draw();
       SnowProfile.snowLayers[0].draw();
     }
-    // Final Layout
-    SnowProfile.layout();
+    // Initialize Stability Tests:
+    // Loop and check for existence of stability tests and count them, break when finished
+    var numTests = 0;
+    while (true) {
+      // special case for first test, which exist even on new pits, so we check for a value
+      if (numTests === 0){
+        if ($.trim($("[id^=edit-field-test-und-" + numTests + "-field-depth-und-0-value]").val()).length) {
+          numTests++;
+        } else {
+          break;
+        }
+      } else {
+        // otherwise we check for field existance
+        if ($("[id^=edit-field-test-und-" + numTests + "-field-depth-und-0-value]").length) {
+          numTests++;
+        } else {
+          break;
+        }
+      }
+    }
+    // Populate SnowProfile.stabilityTests with existing test information
+    for (var i = 0; i < numTests; i++) {
+      SnowProfile.addStabilityTest(i);
+    }
     // Features
     for (var i = 0; i < layers; i++) {
       SnowProfile.snowLayers[i].features().describe(SnowProfile.getSnowPilotData(i));
