@@ -1074,6 +1074,7 @@ var SnowProfile = {};
     layer.draw();
     SnowProfile.layout();
     SnowProfile.ctrlsGroup.front();
+    SnowProfile.handlesGroup.front();
   };
 
   /**
@@ -1157,14 +1158,6 @@ var SnowProfile = {};
     SnowProfile.diagram.setAttribute('width', SnowProfile.Cfg.DRAWING_WD + 10);
     SnowProfile.mainGroup = SnowProfile.drawing.group()
       .attr('id', 'snow_profile_main_g');
-
-    // For debugging, show the bounding box
-    // SnowProfile.drawingBox = SnowProfile.drawing.rect(0, 0)
-    //   .style({
-    //      "fill-opacity": 0,
-    //      stroke: 'red'
-    //   });
-    // SnowProfile.mainGroup.add(SnowProfile.drawingBox);
 
     /**
      * SnowProfile drawing controls group

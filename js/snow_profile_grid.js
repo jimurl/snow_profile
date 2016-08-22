@@ -54,20 +54,18 @@
         y;
 
       // Add a Depth label on the left side of the diagram
-      SnowProfile.depthGroup.add(SnowProfile.drawing.text("Depth ")
+       var depthText = SnowProfile.drawing.text("Depth ")
         .addClass("snow_profile_depth")
         .font({
           family: 'sans-serif',
           fill: SnowProfile.Cfg.LABEL_COLOR,
           size: 18,
           style: 'bold'
-        })
-        .transform({
-          x: -30,
-          y: (SnowProfile.pitDepth * SnowProfile.Cfg.DEPTH_SCALE) / 2,
-          rotation: 270
-        }));
-
+        });
+      depthText.translate(-30, (SnowProfile.pitDepth * SnowProfile.Cfg.DEPTH_SCALE) / 2);
+      depthText.rotate(270);
+      SnowProfile.depthGroup.add(depthText); 
+      
       // Referenced to snow surface or ground?
       // Start drawing lines/labels at zero.  Continue to depth of pit.
       // Horizontal lines are drawn at multiples of DEPTH_LINE_INT regardless of
