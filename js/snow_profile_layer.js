@@ -124,6 +124,18 @@
       .x(SnowProfile.Cfg.HANDLE_INIT_X)
       .y(SnowProfile.depth2y(depthVal))
       .addClass("snow_profile_handle");
+    /*var handle = SnowProfile.drawing.polygon([[SnowProfile.Cfg.HANDLE_INIT_X - 6, SnowProfile.depth2y(depthVal)],[SnowProfile.Cfg.HANDLE_INIT_X + 6, SnowProfile.depth2y(depthVal)],[SnowProfile.Cfg.HANDLE_INIT_X, SnowProfile.depth2y(depthVal) + 10]])
+      .attr('x', SnowProfile.Cfg.HANDLE_INIT_X)
+      .attr('y', SnowProfile.depth2y(depthVal))
+      .addClass("snow_profile_handle");
+    console.log(handle.attr('x'));
+    console.log(handle.x());*/
+      
+    /**
+     * Boolean variable for tracking whether we use square or triangle shape for handle 
+     * @type {Boolean}
+     */
+    var altDepthHandle = true;
       
     /**
      * New handle to adjust the slope between top and bottom of the layer.
@@ -134,6 +146,26 @@
         .y(SnowProfile.depth2y(depthVal + SnowProfile.Cfg.INT_INIT_LAYERS))
         .addClass("snow_profile_handle2")
         .attr('visibility', 'hidden');
+        
+    /**
+     * Toggles the primary handle shape from square to triangle 
+     * 
+     */
+    this.toggleHandleShape = function () {
+      if (altDepthHandle) {
+        handle = SnowProfile.drawing.rect(SnowProfile.Cfg.HANDLE_SIZE,
+          SnowProfile.Cfg.HANDLE_SIZE)
+          .x(SnowProfile.Cfg.HANDLE_INIT_X)
+          .y(SnowProfile.depth2y(depthVal))
+          .addClass("snow_profile_handle");
+      } else {
+        handle = SnowProfile.drawing.polygon('0,0 10,0 5,8')
+          .x(SnowProfile.Cfg.HANDLE_INIT_X)
+          .Y(SnowProfile.depth2y(depthVal))
+          .addClass("snow_profile_handle");
+      }
+      altDepthHandle = !altDepthHandle;
+    };
 
     /**
      * Tooltip that follows the handle and displays when mouse over handle.
@@ -232,11 +264,11 @@
         else if (y < SnowProfile.snowLayers[i - 1].handleGetY()) {
           newY = SnowProfile.snowLayers[i - 1].handleGetY() + 1;
         }
-        // This is now a 'ghost layer' with no x (hardness) value allowed
+        // This is now a hidden layer with no x (hardness) value allowed
         newX = SnowProfile.Cfg.HANDLE_INIT_X;
       }
       else {
-        // Lock down all layers except the final layer 
+        // Lock down all layers' depth except the final layer 
         newY = SnowProfile.snowLayers[i].handleGetY();
         // This layer is below the surface and above the bottom.
         // The handle depth is constrained between layers above and below.
