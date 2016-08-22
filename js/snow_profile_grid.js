@@ -62,7 +62,7 @@
           size: 18,
           style: 'bold'
         });
-      depthText.translate(-30, (SnowProfile.pitDepth * SnowProfile.Cfg.DEPTH_SCALE) / 2);
+      depthText.translate(-10, (SnowProfile.pitDepth * SnowProfile.Cfg.DEPTH_SCALE) / 2);
       depthText.rotate(270);
       SnowProfile.depthGroup.add(depthText); 
       
