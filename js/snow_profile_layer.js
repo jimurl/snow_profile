@@ -124,18 +124,6 @@
       .x(SnowProfile.Cfg.HANDLE_INIT_X)
       .y(SnowProfile.depth2y(depthVal))
       .addClass("snow_profile_handle");
-    /*var handle = SnowProfile.drawing.polygon([[SnowProfile.Cfg.HANDLE_INIT_X - 6, SnowProfile.depth2y(depthVal)],[SnowProfile.Cfg.HANDLE_INIT_X + 6, SnowProfile.depth2y(depthVal)],[SnowProfile.Cfg.HANDLE_INIT_X, SnowProfile.depth2y(depthVal) + 10]])
-      .attr('x', SnowProfile.Cfg.HANDLE_INIT_X)
-      .attr('y', SnowProfile.depth2y(depthVal))
-      .addClass("snow_profile_handle");
-    console.log(handle.attr('x'));
-    console.log(handle.x());*/
-      
-    /**
-     * Boolean variable for tracking whether we use square or triangle shape for handle 
-     * @type {Boolean}
-     */
-    var altDepthHandle = true;
       
     /**
      * New handle to adjust the slope between top and bottom of the layer.
@@ -151,7 +139,7 @@
      * Toggles the primary handle shape from square to triangle 
      * 
      */
-    this.toggleHandleShape = function () {
+    /*this.toggleHandleShape = function () {
       if (altDepthHandle) {
         handle = SnowProfile.drawing.rect(SnowProfile.Cfg.HANDLE_SIZE,
           SnowProfile.Cfg.HANDLE_SIZE)
@@ -165,7 +153,7 @@
           .addClass("snow_profile_handle");
       }
       altDepthHandle = !altDepthHandle;
-    };
+    };*/
 
     /**
      * Tooltip that follows the handle and displays when mouse over handle.
@@ -189,21 +177,26 @@
      * @param {number} x X coordinate of the mouse
      */
     function handleTipSet(x) {
-
+      var i = self.getIndex();
       var mm;
+      
+      // Bottom layer gets depth tip
+      if (i === (SnowProfile.snowLayers.length - 1)) {
+        if (SnowProfile.depthRef === "s") {
 
-      if (SnowProfile.depthRef === "s") {
+           // Depth is referred to the snow surface
+           mm = Math.round(depthVal * 10) / 10;
+        }
+        else {
 
-         // Depth is referred to the snow surface
-         mm = Math.round(depthVal * 10) / 10;
+          // Depth is referred to the ground
+          mm = Math.round((SnowProfile.totalDepth - depthVal) * 10) / 10;
+        }
+        handleTip.setContent( "Depth: " + mm );
+      } else {
+        // Other layers get hardness tip
+        handleTip.setContent( "Primary Hardness: " + SnowProfile.x2code(x));
       }
-      else {
-
-        // Depth is referred to the ground
-        mm = Math.round((SnowProfile.totalDepth - depthVal) * 10) / 10;
-      }
-      handleTip.setContent( mm + ', ' + SnowProfile.x2code(x));
-      //handleTip.setContent( depthVal );
     }
     
     /**
@@ -212,7 +205,7 @@
      * @param {number} x X coordinate of the mouse
      */
     function slopeHandleTipSet(x) {
-        slopeHandleTip.setContent(SnowProfile.x2code(x));
+        slopeHandleTip.setContent( "Secondary Hardness: " + SnowProfile.x2code(x));
     }
 
     /**
@@ -611,12 +604,8 @@
       slopeHandle.y(handle.y() + (yBottom - yTop));
 
       if (handle.x() !== SnowProfile.Cfg.HANDLE_INIT_X) {
-        //layerOutline.width(SnowProfile.Cfg.DEPTH_LABEL_WD + SnowProfile.Cfg.GRAPH_WIDTH - handle.x() - (SnowProfile.Cfg.HANDLE_SIZE / 2));
         layerOutline.plot([[SnowProfile.Cfg.HANDLE_INIT_X + SnowProfile.Cfg.HANDLE_SIZE / 2,yTop], [SnowProfile.Cfg.HANDLE_INIT_X + SnowProfile.Cfg.HANDLE_SIZE / 2,yBottom], [slopeHandle.x() + SnowProfile.Cfg.HANDLE_SIZE / 2,yBottom], [handle.x() + SnowProfile.Cfg.HANDLE_SIZE / 2,yTop]]);
       }
-      //layerOutline.x(handle.x() + (SnowProfile.Cfg.HANDLE_SIZE / 2));
-      //layerOutline.y(yTop);
-      //layerOutline.height(yBottom - yTop);
       
     };
 
@@ -779,16 +768,27 @@
      * @callback
      * @memberof handle
      */
-    handle.mouseup(function() {
+    /*handle.mouseup(function() {
       handle.x(SnowProfile.code2x(featObj.hardness()));
       slopeHandle.x(SnowProfile.code2x(featObj.hardness2()));
       self.draw();
-    });
+    });*/
+    handle.on('dragend', function(event) {
+      handle.x(SnowProfile.code2x(featObj.hardness()));
+      slopeHandle.x(SnowProfile.code2x(featObj.hardness2()));
+      self.draw();
+    })
     
+    /*
     slopeHandle.mouseup(function() {
       slopeHandle.x(SnowProfile.code2x(featObj.hardness2()));
       self.draw();
-    });
+    });*/
+    slopeHandle.on('dragend', function(event) {
+      handle.x(SnowProfile.code2x(featObj.hardness()));
+      slopeHandle.x(SnowProfile.code2x(featObj.hardness2()));
+      self.draw();
+    })
     
   }; // function SnowProfile.Layer()
 })(jQuery);
