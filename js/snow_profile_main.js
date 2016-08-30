@@ -126,13 +126,16 @@
   }
   
   // Initialize the live editor one time on document ready 
-  var isInitialized, promptedForConcern;
+  var isInitialized, needsWarning, hasBeenWarned;
   $(document).ready(function() {
     if(!isInitialized) 
     {
       SnowProfile.main();
+      // Boolean to prevent reinitialization
       isInitialized = true;
-      promptedForConcern = false;
+      // Booleans to warn user only one time about selecting a layer of greatest concern
+      needsWarning = false;
+      hasBeenWarned = false;
       
       // Run initialization code for SnowPilot snowpits with already existing information
       SnowPilotInit();
@@ -220,6 +223,18 @@
         } */
       } 
       
+      // Horizontal tab listeners for Layer of Greatest Concern Warning
+      $('#content', context).once('logc_warning', function () {
+        $('ul').delegate('li', 'mousedown', function (event) {
+          if($(this).hasClass("horizontal-tab-button-1")) {
+            needsWarning = true;
+          } else if(needsWarning && !hasBeenWarned) {
+            alert("Reminder:  You have not yet selected a layer of greatest concern");
+            hasBeenWarned = true;
+          }
+        });
+      });
+      
       // Listen for text changes to form and update live graph appropriately
       $('#edit-field-layer', context).once('livegraph_connected', function () {        
         // Input delegation
@@ -263,6 +278,10 @@
               SnowProfile.snowLayers[layerNum].draw();
             }
             SnowProfile.layout();
+          }
+          // Layer of Greatest Concern Checked 
+          if($(this).attr('id').indexOf("-field-this-is-my-layer-of-greate-") >= 0) {
+            hasBeenWarned = true;
           }
           // Stop Event 
           event.stopPropagation();
