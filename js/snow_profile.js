@@ -702,6 +702,9 @@ var SnowProfile = {};
     var secondaryShape = translateShape($("div[class*=form-item-field-layer-und-" + layerNum + "-field-grain-type-secondary-] > div > select")[0].value);
     var secondarySubShape = translateSubShape($("[id^=edit-field-layer-und-" + layerNum + "-field-grain-type-secondary-]").val());
     var sizeMin = $("select[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-]").val();
+    if (sizeMin === "_none") {
+      sizeMin = "";
+    }
     var sizeMax = $("select[id^=edit-field-layer-und-" + layerNum + "-field-grain-size-max-]").val();
     if (sizeMax === "_none") {
       sizeMax = "";
@@ -902,67 +905,95 @@ var SnowProfile = {};
     var scoreType, scoreValue, testString;
     var testType = $("select[id^=edit-field-test-und-" + testNum + "-field-stability-test-type]").val();
     var shearQuality = $('select[id^=edit-field-test-und-' + testNum + '-field-shear-quality]').val();
-    var testDepth = Number($('input[id^=edit-field-test-und-' + testNum + '-field-depth]').val());
+    if (shearQuality === "_none") {
+      shearQuality = "";
+    }
+    var testDepthString = $('input[id^=edit-field-test-und-' + testNum + '-field-depth]').val();
+    var testDepth = Number(testDepthString);
+    if (testDepth === 0) {
+      testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
+      testDepthString = "";
+    }
     
     switch(testType){
       case "ECT":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-ect]').val();
         scoreValue = $('input[id^=edit-field-test-und-' + testNum + '-field-ec-score]').val();
-        if (scoreType === "ECTPV") {
-          testString = scoreType + " @ " + testDepth;
+        if (scoreType === "_none") {
+          testString = testType + " @ " + testDepthString;
+        } else if (scoreType === "ECTPV") {
+          testString = scoreType + " @ " + testDepthString;
         } else if (scoreType === "ECTX") {
           testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
           testString = scoreType;
         } else {
-          testString = scoreType + scoreValue + " @ " + testDepth;
+          testString = scoreType + scoreValue + " @ " + testDepthString;
         }
         break;
       case "CT":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-ct]').val();
         scoreValue = $('input[id^=edit-field-test-und-' + testNum + '-field-ct-score]').val();
-        if (scoreType === "CTV") {
-          testString = scoreType + ", " + shearQuality + " @ " + testDepth;
+        if (scoreType === "_none") {
+          testString = testType + " @ " + testDepthString;
+        } else if (scoreType === "CTV") {
+          testString = scoreType + ", " + shearQuality + " @ " + testDepthString;
         } else if (scoreType === "CTN") {
           testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
           testString = scoreType;
         } else {
-          testString = scoreType + scoreValue + ", " + shearQuality + " @ " + testDepth;
+          testString = scoreType + scoreValue + ", " + shearQuality + " @ " + testDepthString;
         }
         break;
       case "RB":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-rb]').val();
         scoreValue = "";
-        if (scoreType === "RB7") {
+        if (scoreType === "_none") {
+          testString = testType + " @ " + testDepthString;
+        } else if (scoreType === "RB7") {
           testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
           testString = scoreType;
         } else {
-          testString = scoreType + ", " + shearQuality + " @ " + testDepth;
+          testString = scoreType + ", " + shearQuality + " @ " + testDepthString;
         }
         break;
       case "PST":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-data-code-pst]').val();
         var sawCutLength = $('input[id^=edit-field-test-und-' + testNum + '-field-length-of-saw-cut]').val();
+        if (sawCutLength.length === 0) {
+          sawCutLength = "_";
+        }
         var columnLength = $('input[id^=edit-field-test-und-' + testNum + '-field-length-of-isolated-col]').val();
-        testString = "PST " + sawCutLength + "/" + columnLength + "(" + scoreType + ") down " + testDepth; 
+        if (columnLength.length === 0) {
+          columnLength = "_";
+        }
+        if (scoreType === "_none") {
+          testString = "PST @ " + testDepthString;
+        } else {
+          testString = "PST " + sawCutLength + "/" + columnLength + "(" + scoreType + ") @ " + testDepthString; 
+        }
         break;
       case "SB":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-sb]').val();
         scoreValue = "";
-        if (scoreType === "SBN") {
+        if (scoreType === "_none") {
+          testString = testType + " @ " + testDepthString;
+        } else if (scoreType === "SBN") {
           testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
           testString = scoreType;
         } else {
-          testString = scoreType + ", " + shearQuality + " @ " + testDepth;
+          testString = scoreType + ", " + shearQuality + " @ " + testDepthString;
         }
         break;
       case "ST":
         scoreType = $('select[id^=edit-field-test-und-' + testNum + '-field-stability-test-score-st]').val();
         scoreValue = "";
-        if (scoreType === "STN") {
+        if (scoreType === "_none") {
+          testString = testType + " @ " + testDepthString;
+        } else if (scoreType === "STN") {
           testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
           testString = scoreType;
         } else {
-          testString = scoreType + ", " + shearQuality + " @ " + testDepth;
+          testString = scoreType + ", " + shearQuality + " @ " + testDepthString;
         }
         break;
     }
