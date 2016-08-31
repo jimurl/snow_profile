@@ -171,6 +171,9 @@
       Drupal.ajax.prototype.beforeSubmit = function (form_values, element, options) {
         var elementName = options.extraData._triggering_element_name;
         var elementText = options.extraData._triggering_element_value;
+        //console.log("Drupal Ajax triggered");
+        //console.log("Element Name: " + elementName);
+        //console.log("Element Text: " + elementText);
         
         // Remove stability tests
         if (elementText === "Remove Test") {
@@ -237,7 +240,7 @@
       
       // Listen for text changes to form and update live graph appropriately
       $('#edit-field-layer', context).once('livegraph_connected', function () {        
-        // Input delegation
+        // Layers input delegation
         $('#edit-field-layer', context).delegate( 'input', 'change', function (event) {
           // Find layer number - starts at 0, corresponds directly to SnowProfile.snowLayers[] index but not to .length
           var layerString = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
@@ -268,12 +271,13 @@
               if (SnowProfile.depthRef === "s") 
                 SnowProfile.snowLayers[(layerNum + 1)].depth($(this).val());
               else if (SnowProfile.depthRef === "g")
-                SnowProfile.snowLayers[(layerNum + 1)].depth(SnowProfile.pitDepth - $(this).val());
-              // Draw
+                var invertedDepth = SnowProfile.pitDepth - $(this).val();
+                SnowProfile.snowLayers[(layerNum + 1)].depth(invertedDepth);
+              // If it's the last visible layer (2nd from last layer), keep bottom slope handle hidden
               if((layerNum + 2) == SnowProfile.snowLayers.length) {
-                // Working with last visible layer,so keep bottom slope handle hidden
                 SnowProfile.snowLayers[(layerNum + 1)].handleTouchState(true, true);
               }
+              // Draw
               SnowProfile.snowLayers[(layerNum + 1)].draw();
               SnowProfile.snowLayers[layerNum].draw();
             }
@@ -286,7 +290,18 @@
           // Stop Event 
           event.stopPropagation();
         });
-        // Select delegation
+        // Layers input mouseover delegation for submit bug
+        $('#edit-field-layer', context).delegate( 'input', 'mouseover', function (event) {
+          if($(this).hasClass("field-add-more-submit")) {
+            // When user hovers over Add Layer button, quickly blur and refocus element to trigger listeners
+            var elem = document.activeElement;
+            elem.blur();
+            elem.focus();
+          }
+          // Stop Event 
+          event.stopPropagation();
+        });
+        // Layers select delegation
         $('#edit-field-layer', context).delegate( 'select', 'change', function (event) {
           
           var layerString = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
@@ -333,7 +348,7 @@
           event.stopPropagation();
         });
         
-        // Stability Tests delegation
+        // Stability Tests select delegation
         $('#edit-field-test', context).delegate( 'select', 'change', function (event) {
           // Get Test number 
           var testString = $(this).parents("div[class*='stability_test_num_']")[0].className.split(" ")[1].split("_")[3];
@@ -345,6 +360,7 @@
             SnowProfile.snowLayers[i].features().describe(SnowProfile.getSnowPilotData(i));
           }
         });
+        // Stability Tests input delegation
         $('#edit-field-test', context).delegate( 'input', 'blur', function (event) {
           // Get Test number 
           var testString = $(this).parents("div[class*='stability_test_num_']")[0].className.split(" ")[1].split("_")[3];
@@ -355,6 +371,17 @@
           for (var i = 0; i < (SnowProfile.snowLayers.length - 1); i++) {
             SnowProfile.snowLayers[i].features().describe(SnowProfile.getSnowPilotData(i));
           }
+        });
+        // Layers input mouseover delegation for submit bug
+        $('#edit-field-test', context).delegate( 'input', 'mouseover', function (event) {
+          if($(this).hasClass("field-add-more-submit")) {
+            // When user hovers over Add Layer button, quickly blur and refocus element to trigger listeners
+            var elem = document.activeElement;
+            elem.blur();
+            elem.focus();
+          }
+          // Stop Event 
+          event.stopPropagation();
         });
         
       });
