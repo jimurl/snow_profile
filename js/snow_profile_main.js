@@ -151,11 +151,15 @@
         // add new layer if the form updated, use different depth values depending on depthRef
         var newDepthNumber = Number($("[id^=edit-field-layer-und-" + maxIndex + "-field-bottom-depth-und-0-value]").val());
         if (SnowProfile.depthRef === 's'){
-          SnowProfile.newLayer(newDepthNumber + 20);
+          newDepthNumber += 20;
         }
         else if (SnowProfile.depthRef === 'g'){
-          SnowProfile.newLayer(SnowProfile.pitDepth - newDepthNumber + 20);
+          newDepthNumber = SnowProfile.pitDepth - newDepthNumber + 20;
         }
+        if (newDepthNumber >= SnowProfile.pitDepth) {
+            newDepthNumber = SnowProfile.pitDepth;
+        }
+        SnowProfile.newLayer(newDepthNumber);
       }
     });
   });
