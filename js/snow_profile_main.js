@@ -127,6 +127,8 @@
   
   // Initialize the live editor one time on document ready 
   var isInitialized, needsWarning, hasBeenWarned;
+  SnowProfile.snowpackHeightSet = false;
+  
   $(document).ready(function() {
     if(!isInitialized) 
     {
@@ -156,8 +158,17 @@
         else if (SnowProfile.depthRef === 'g'){
           newDepthNumber = SnowProfile.pitDepth - newDepthNumber + 20;
         }
+        // check if new layer would fall below graph
         if (newDepthNumber >= SnowProfile.pitDepth) {
+          // if HoS is set in SnowPilot, new layer appears at bottom
+          if (SnowProfile.snowpackHeightSet) {
             newDepthNumber = SnowProfile.pitDepth;
+          } else {
+            // if no HoS, extend and redraw grid by triggering event 
+            SnowProfile.totalDepth += 20;
+            $("#edit-field-total-height-of-snowpack-und-0-value").trigger("change");
+            console.log("Extending grid");
+          }
         }
         SnowProfile.newLayer(newDepthNumber);
       }

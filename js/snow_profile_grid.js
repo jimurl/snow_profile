@@ -9,7 +9,7 @@
 
 (function($) {
   "use strict";
-
+  
   /**
    * Singleton object describing the reference grid
    *
@@ -314,6 +314,7 @@
       var drawRef = $("#edit-field-depth-0-from-und").val();
       if(drawRef === "bottom") {
         SnowProfile.depthRef = "g";
+        SnowProfile.snowpackHeightSet = true;
       }
       else {
         SnowProfile.depthRef = "s";
@@ -473,13 +474,16 @@
      */
     function pitDepthChange() {
       var pitDepth;
+      SnowProfile.snowpackHeightSet = false;
       // Check height of snowpack field
       if ($.trim($("#edit-field-total-height-of-snowpack-und-0-value").val()).length){
         pitDepth = $("#edit-field-total-height-of-snowpack-und-0-value").val();
+        SnowProfile.snowpackHeightSet = true;
       }
       // If no HoS and we're measuring from bottom, use the first Top Depth value 
       else if(SnowProfile.depthRef === 'g'){
         pitDepth = $("[id^=edit-field-layer-und-0-field-height-und-0-value]").val();
+        SnowProfile.snowpackHeightSet = true;
       } else pitDepth = SnowProfile.totalDepth;
       
       SnowProfile.totalDepth = Number(pitDepth);
