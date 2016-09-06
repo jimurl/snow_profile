@@ -241,6 +241,62 @@
         } */
       } 
       
+      // Auto scroll for SnowPilot form 
+      $('#edit-field-layer', context).once('auto_scroll', function () {
+        $(window).scroll(function () {
+          //var scrollBot = $(document).height() - $(window).height() - $(window).scrollTop();
+          // Layers Tab
+          if ($('#active-horizontal-tab').parents('.horizontal-tab-button-1').length > 0) {
+            if ($(window).scrollTop() > 225 ) {
+              $('#edit-field-layer').css({
+                "position": "fixed",
+                "top": "50px"
+              });
+            } else {
+              $('#edit-field-layer').css({
+                "position": "static"
+              });
+            }
+          // Stability Tests Tab
+          } else if ($('#active-horizontal-tab').parents('.horizontal-tab-button-2').length > 0) {
+            if ($(window).scrollTop() > 225 ) {
+              $('#edit-field-test').css({
+                "position": "fixed",
+                "top": "50px"
+              });
+            } else {
+              $('#edit-field-test').css({
+                "position": "static"
+              });
+            }
+          // Temp Profile Tab
+          } else if ($('#active-horizontal-tab').parents('.horizontal-tab-button-3').length > 0) {
+            if ($(window).scrollTop() > 225 ) {
+              $('#edit-field-temp-collection').css({
+                "position": "fixed",
+                "top": "50px"
+              });
+            } else {
+              $('#edit-field-temp-collection').css({
+                "position": "static"
+              });
+            }
+          } else if ($('#active-horizontal-tab').parents('.horizontal-tab-button-4').length > 0) {
+          // Density Tab
+            if ($(window).scrollTop() > 225 ) {
+              $('#edit-field-density-profile').css({
+                "position": "fixed",
+                "top": "50px"
+              });
+            } else {
+              $('#edit-field-density-profile').css({
+                "position": "static"
+              });
+            }
+          }
+        });
+      });
+      
       // Horizontal tab listeners for Layer of Greatest Concern Warning
       $('#content', context).once('logc_warning', function () {
         $('ul').delegate('li', 'mousedown', function (event) {
