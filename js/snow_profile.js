@@ -905,6 +905,10 @@ var SnowProfile = {};
     var scoreType, scoreValue, testString;
     var testType = $("select[id^=edit-field-test-und-" + testNum + "-field-stability-test-type]").val();
     var shearQuality = $('select[id^=edit-field-test-und-' + testNum + '-field-shear-quality]').val();
+    if (typeof shearQuality == "undefined") {
+      // must be fracture character instead of shear quality
+      shearQuality = $('select[id^=edit-field-test-und-' + testNum + '-field-fracture-character]').val();
+    }
     if (shearQuality === "_none") {
       shearQuality = "";
     }
