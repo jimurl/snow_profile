@@ -311,7 +311,7 @@
             // When user hovers over Add Layer button, quickly blur and refocus element to trigger listeners
             var elem = document.activeElement;
             elem.blur();
-            elem.focus();
+            //elem.focus();
           }
           // Stop Event 
           event.stopPropagation();
