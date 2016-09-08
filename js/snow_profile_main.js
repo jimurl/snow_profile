@@ -303,7 +303,7 @@
           if($(this).hasClass("horizontal-tab-button-1")) {
             needsWarning = true;
           } else if(needsWarning && !hasBeenWarned) {
-            alert("Reminder:  You have not yet selected a layer of greatest concern");
+            //alert("Reminder:  You have not yet selected a layer of greatest concern");
             hasBeenWarned = true;
           }
         });

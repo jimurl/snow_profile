@@ -299,9 +299,10 @@
       // SnowPilot form updates:
       // Layer heights
       if (SnowProfile.depthRef === "s") {
-        $('div.layer_num_' + i + ' input[id*="-height-"]').val(depthVal);
+        var roundedDepth = Math.round(depthVal * 10) / 10;
+        $('div.layer_num_' + i + ' input[id*="-height-"]').val(roundedDepth);
         if (i > 0){
-          $('div.layer_num_' + (i-1) + ' input[id*="-bottom-depth-"]').val(depthVal);  
+          $('div.layer_num_' + (i-1) + ' input[id*="-bottom-depth-"]').val(roundedDepth);  
         }
       }
       else if (SnowProfile.depthRef === "g") {
