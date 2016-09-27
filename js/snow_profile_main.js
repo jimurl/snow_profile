@@ -94,6 +94,16 @@
       SnowProfile.snowLayers[1].handleTouchState(true, true);
       SnowProfile.snowLayers[1].draw();
       SnowProfile.snowLayers[0].draw();
+      // Prepopulate first layer Top Depth 
+      var currentDepth = SnowProfile.pitDepth;
+      if (SnowProfile.depthRef === "s") {
+        var roundedDepth = 0.0;
+        $('div.layer_num_0 input[id*="-height-"]').val(roundedDepth);
+      }
+      else if (SnowProfile.depthRef === "g") {
+        var roundedDepth = Math.round(currentDepth * 10) / 10;
+        $('div.layer_num_0 input[id*="-height-"]').val(roundedDepth);
+      }
     }
     // Initialize Stability Tests:
     // Loop and check for existence of stability tests and count them, break when finished
@@ -409,6 +419,7 @@
           
           var layerString = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
           var layerNum = parseInt(layerString, 10);
+          console.log("LayerNum: " + layerNum);
           
           // Primary Hardness Selector
           if($(this).parents('.field-name-field-hardness').length) {
