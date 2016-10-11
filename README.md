@@ -11,8 +11,8 @@ of such diagrams are defined in the
 <a
 href="http://www.cryosphericsciences.org/products/snowClassification/snowclass_2009-11-23-tagged-highres.pdf">IACS
  2009 Standard</a>. This module
-provides a drag-and-drop browser tool to create such a diagram, with
-the ability to save the finished diagram as a PNG file.
+provides a drag-and-drop browser tool to create such a diagram, specifically 
+tailored for use with the <a href="http://snowpilot.org">SnowPilot</a> web application.
 
 The drawing tool provided by this module depends on browser support
 for
@@ -27,8 +27,8 @@ href="http://www.mountaineersbooks.org/Staying-Alive-in-Avalanche-Terrain-2nd-Ed
 Alive In Avalanche Terrain</a> by Bruce Tremper. Snow profiles are
 described on pp. 175-180 of the second edition. 
 
-This module was written pro bono for the
-<a href="http://utahavalanchecenter.org/">Utah Avalanche Center</a>.
+This project is based off the original module which was written pro bono for the
+<a href="http://utahavalanchecenter.org/">Utah Avalanche Center</a> by Walt Haas.
 
 <h2>DOCUMENTATION</H2>
 
