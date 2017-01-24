@@ -354,8 +354,7 @@ var SnowProfile = {};
   /**
    * Width in pixels of one hardness band in the CAAML_HARD table
    *
-   * Calculation depends on knowing there are 21 entries in the table
-   * ***NO LONGER THE CASE - NOW THERE ARE 18
+   * Calculation depends on knowing there are 18 entries in the table
    * @const {number}
    * @memberof SnowProfile
    */
@@ -615,6 +614,8 @@ var SnowProfile = {};
    * that fixed, iterate down the snowpack.
    */
   SnowProfile.layout = function() {
+    console.log("INFO: In SnowProfile.layout()");
+    
     var height,
       i,
       featureBottom,
