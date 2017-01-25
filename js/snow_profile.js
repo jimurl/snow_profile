@@ -698,6 +698,7 @@ var SnowProfile = {};
    * @returns {object} data object for use with featObj.describe(data) method.
    */
   SnowProfile.getSnowPilotData = function (layerNum) {
+    console.log("INFO: In SnowProfile.getSnowPilotData(" + layerNum + ")");
     var primaryShape = translateShape($("div[class*=form-item-field-layer-und-" + layerNum + "-field-grain-type-] > div > select")[0].value);
     var primarySubShape = translateSubShape($("[id^=edit-field-layer-und-" + layerNum + "-field-grain-type-]").val());
     var secondaryShape = translateShape($("div[class*=form-item-field-layer-und-" + layerNum + "-field-grain-type-secondary-] > div > select")[0].value);
@@ -722,6 +723,9 @@ var SnowProfile = {};
       }
       
       if (testDepth >= layerTopDepth && testDepth < layerBotDepth) {
+        stabTests.push(SnowProfile.stabilityTests[i]);
+      }
+      if (testDepth == SnowProfile.pitDepth && testDepth == layerBotDepth) {
         stabTests.push(SnowProfile.stabilityTests[i]);
       }
     }
@@ -903,6 +907,7 @@ var SnowProfile = {};
    * @param {number} [testNum] The stability test number, starting at 0 for first test
    */
   SnowProfile.addStabilityTest = function (testNum) {
+    console.log("INFO: In SnowProfile.addStabilityTest(" + testNum + ")");
     var scoreType, scoreValue, testString;
     var testType = $("select[id^=edit-field-test-und-" + testNum + "-field-stability-test-type]").val();
     var shearQuality = $('select[id^=edit-field-test-und-' + testNum + '-field-shear-quality]').val();
@@ -917,10 +922,13 @@ var SnowProfile = {};
     // Convert comma to decimal for EU style
     testDepthString = testDepthString.replace(/,/g,".");
     var testDepth = Number(testDepthString);
-    if (testDepth === 0) {
+    // Set anything with no depth yet input to the top
+    if (!testDepthString.length) {
+      console.log("No Test Depth Input");
       testDepth = ((SnowProfile.depthRef === "s") ? 0 : SnowProfile.pitDepth);
       testDepthString = "";
     }
+    console.log("testDepth set to " + testDepth);
     
     switch(testType){
       case "ECT":

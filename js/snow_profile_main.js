@@ -405,7 +405,6 @@
           
           var layerString = $(this).parents("div[class*='layer_num_']")[0].className.split(" ")[1].split("_")[2];
           var layerNum = parseInt(layerString, 10);
-          console.log("LayerNum: " + layerNum);
           
           // Primary Hardness Selector
           if($(this).parents('.field-name-field-hardness').length) {
